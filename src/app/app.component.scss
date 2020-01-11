@@ -1,0 +1,35 @@
+.terminal {
+  font-family: monospace;
+  white-space: pre;
+  .output {
+    overflow-y: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 200px;
+
+    > :first-child {
+      margin-top: auto !important;
+    }
+  }
+
+  .input {
+    display: grid;
+    grid-template-columns: 8px 1fr;
+    grid-gap: 8px;
+
+  }
+
+  .error {
+    color: darkred;
+  }
+}
+
+.repository {
+  font-family: monospace;
+  white-space: pre;
+}
+
+.files {
+  font-family: monospace;
+  white-space: pre;
+}

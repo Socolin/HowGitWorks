@@ -1,0 +1,9 @@
+<ng-container *ngIf="file.type === 'directory'">
+  <span>{{file.name}}/</span>
+  <ng-container *ngFor="let child of file.files">
+    <app-filesystem-node [file]="child"></app-filesystem-node>
+  </ng-container>
+</ng-container>
+<ng-container *ngIf="file.type === 'textFile'">
+  <span>{{file.name}}</span>
+</ng-container>
