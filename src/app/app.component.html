@@ -5,7 +5,10 @@
     </div>
   </div>
   <label class="input">
-    <span>$</span><span contenteditable="true"  #command (keydown.enter)="execute(command.textContent); command.textContent = ''; $event.preventDefault()"></span>
+    <span>$</span>
+    <span contenteditable="true"
+          #command
+          (keydown.enter)="execute(command.textContent); command.textContent = ''; $event.preventDefault()"></span>
   </label>
 </div>
 <div>
@@ -18,10 +21,11 @@
 <div>
   <h2>.git</h2>
   <div *ngIf="context.repository" class="repository">
-    <div>branches/</div>
-    <div>HEAD</div>
-    <div>info/</div>
+    <div>HEAD ({{context.repository.HEAD}})</div>
     <div>objects/</div>
+    <div *ngFor="let hash of getObjectsHash(context.repository.objects)">
+      {{hash}}
+    </div>
     <div>refs/</div>
 
   </div>
@@ -39,4 +43,9 @@
 
 <div>
   <h2>index</h2>
+  <div class="index" *ngIf="context?.repository?.index">
+    <div *ngFor="let index of context.repository.index.files">
+      <span>{{index.type}}00{{index.mode}} {{index.path}} {{index.objectHash}}</span>
+    </div>
+  </div>
 </div>

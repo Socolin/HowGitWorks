@@ -1,17 +1,18 @@
 import {GitIndex} from './git-index';
 import {IGitObject} from './objects/git-object';
-import {hash} from './objects/types';
+import {GitHash} from './objects/types';
+
+const defaultBranchName = 'master';
 
 export class Repository {
-  private readonly defaultBranchName = 'master';
 
   index: GitIndex;
   objects: { [hash: string]: IGitObject };
   refs: {
-    heads: { [name: string]: hash };
-    tags: { [name: string]: hash };
+    heads: { [name: string]: GitHash };
+    tags: { [name: string]: GitHash };
   };
-  HEAD: hash;
+  HEAD: GitHash|string = 'ref: refs/heads/master';
   config: {
     [sectionName: string]: {
       [key: string]: string

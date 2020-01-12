@@ -52,6 +52,7 @@ export class ShellExecutor {
       }
       return 0;
     } catch (e) {
+      console.error(e);
       this.terminal.writeError(`An error occurred: ${e.message}`);
       return 1;
     }

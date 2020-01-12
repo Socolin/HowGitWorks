@@ -1,1 +1,1 @@
-export type hash = string;
+export type GitHash = string;

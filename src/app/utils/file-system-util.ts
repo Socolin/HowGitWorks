@@ -91,8 +91,40 @@ export class FileSystemUtil {
     return directory;
   }
 
+  getAbsolutePath(context: Context, relativePath: string): string {
+    let directory = this.getParentDirectory(context, relativePath);
+    let absolutePath = '';
+    while (directory.parent !== directory) {
+      absolutePath = directory.name + '/' + absolutePath;
+      directory = directory.parent;
+    }
+    return '/' + absolutePath + this.getFileName(relativePath);
+  }
+
   private getFileName(path: string) {
     const splitPath = path.split('/');
     return splitPath[splitPath.length - 1];
+  }
+
+  getAllChildPath(context: Context, path: string): string[] {
+    const paths = [];
+    const directory = this.getNode(context, path);
+    if (directory instanceof Directory) {
+      this.iterateAllChild(directory, '', (filePath, node) => {
+        if (node instanceof TextFile) {
+          paths.push(filePath);
+        }
+      });
+    }
+    return paths;
+  }
+
+  private iterateAllChild(directory: Directory, path: string, action: (path: string, node: File) => void) {
+    for (const file of directory.files) {
+      action(path + '/' + file.name, file);
+      if (file instanceof Directory) {
+        this.iterateAllChild(file, path + '/' + file.name, action);
+      }
+    }
   }
 }

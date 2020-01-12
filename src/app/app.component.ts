@@ -11,6 +11,8 @@ import {FileSystemUtil} from './utils/file-system-util';
 import {CdExecutor} from './basic-commands/cd-executor';
 import {LsExecutor} from './basic-commands/ls-executor';
 import {CatExecutor} from './basic-commands/cat-executor';
+import {GitObjectUtil} from './git/utils/git-object-util';
+import {IGitObject} from './git/objects/git-object';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +29,8 @@ import {CatExecutor} from './basic-commands/cat-executor';
     FileSystemUtil,
     CdExecutor,
     LsExecutor,
-    CatExecutor
+    CatExecutor,
+    GitObjectUtil
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -57,5 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  getObjectsHash(objects: {[hash: string]: IGitObject}) {
+    return Object.keys(objects);
   }
 }

@@ -2,10 +2,17 @@ import {Context} from '../models/context';
 import {Terminal} from '../utils/terminal';
 import {Injectable} from '@angular/core';
 import {GitInitCommand} from './commands/git-init-command';
+import {GitAddCommand} from './commands/git-add-command';
+import {FileSystemUtil} from '../utils/file-system-util';
+import {GitObjectUtil} from './utils/git-object-util';
 
 @Injectable()
 export class GitExecutor {
-  constructor(private readonly terminal: Terminal) {
+  constructor(
+    private readonly terminal: Terminal,
+    private readonly fileSystemUtil: FileSystemUtil,
+    private readonly gitObjectUtil: GitObjectUtil
+  ) {
   }
 
   public execute(context: Context, argv: string[]): number {
@@ -16,6 +23,9 @@ export class GitExecutor {
     switch (argv[0]) {
       case 'init':
         new GitInitCommand(this.terminal, context).execute(argv.slice(1));
+        break;
+      case 'add':
+        new GitAddCommand(this.terminal, context, this.fileSystemUtil, this.gitObjectUtil).execute(argv.slice(1));
         break;
       default:
         this.terminal.writeError(`git: Unknown sub-command: \`${argv[0]}'`);

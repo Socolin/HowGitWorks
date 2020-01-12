@@ -1,3 +1,5 @@
+export type GitObjectType = 'blob' | 'commit' | 'tree';
+
 export interface IGitObject {
-  type: 'blob' | 'commit' | 'tree';
+  type: GitObjectType;
 }

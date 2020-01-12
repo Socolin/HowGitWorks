@@ -1,11 +1,11 @@
 import {IGitObject} from './git-object';
-import {hash} from './types';
+import {GitHash} from './types';
 
-export class Tree implements IGitObject {
+export class GitTreeObject implements IGitObject {
   public readonly type = 'tree';
   public readonly objects: {
     mode: string,
     path: string,
-    objectHash: hash
+    objectHash: GitHash
   }[];
 }
