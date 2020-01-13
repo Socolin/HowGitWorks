@@ -13,6 +13,7 @@ import {LsExecutor} from './basic-commands/ls-executor';
 import {CatExecutor} from './basic-commands/cat-executor';
 import {GitObjectUtil} from './git/utils/git-object-util';
 import {IGitObject} from './git/objects/git-object';
+import {GitStatusCommand} from './git/commands/git-status-command';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,7 @@ import {IGitObject} from './git/objects/git-object';
     CdExecutor,
     LsExecutor,
     CatExecutor,
-    GitObjectUtil
+    GitObjectUtil,
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {

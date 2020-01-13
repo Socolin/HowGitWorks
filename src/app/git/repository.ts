@@ -18,7 +18,6 @@ export class Repository {
       [key: string]: string
     }
   };
-  branches: { [name: string]: string };
 
   constructor() {
     this.index = new GitIndex();

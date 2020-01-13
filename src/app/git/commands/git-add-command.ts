@@ -22,7 +22,7 @@ export class GitAddCommand {
     ]);
   }
 
-  execute(argv: string[]) {
+  execute(argv: string[]): number {
     if (!this.context.repository) {
       this.terminal.writeError('fatal: not a git repository');
       return 1;
