@@ -66,8 +66,9 @@ export class GitTreeUtil {
             throw new Error('Error while building tree, index seems to use same path as a file and as a directory');
           }
         } else {
-          currentNode[pathFragment] = {};
-          currentNode = new IndexNode();
+          const newNode = new IndexNode();
+          currentNode[pathFragment] = newNode;
+          currentNode = newNode;
         }
       }
     }
