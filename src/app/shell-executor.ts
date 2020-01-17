@@ -8,6 +8,9 @@ import {EchoExecutor} from './basic-commands/echo-executor';
 import {CdExecutor} from './basic-commands/cd-executor';
 import {CatExecutor} from './basic-commands/cat-executor';
 import {LsExecutor} from './basic-commands/ls-executor';
+import {LoadExecutor} from './basic-commands/load-executor';
+import {SaveExecutor} from './basic-commands/save-executor';
+import {InitExecutor} from './basic-commands/init-executor';
 
 @Injectable()
 export class ShellExecutor {
@@ -21,6 +24,9 @@ export class ShellExecutor {
     private readonly cdExecutor: CdExecutor,
     private readonly lsExecutor: LsExecutor,
     private readonly catExecutor: CatExecutor,
+    private readonly initExecutor: InitExecutor,
+    private readonly loadExecutor: LoadExecutor,
+    private readonly saveExecutor: SaveExecutor,
   ) {
   }
 
@@ -46,6 +52,12 @@ export class ShellExecutor {
           return this.lsExecutor.execute(this.context, argv.slice(1));
         case 'cat':
           return this.catExecutor.execute(this.context, argv.slice(1));
+        case 'init':
+          return this.initExecutor.execute(this.context, argv.slice(1));
+        case 'save':
+          return this.saveExecutor.execute(this.context, argv.slice(1));
+        case 'load':
+          return this.loadExecutor.execute(this.context, argv.slice(1));
         default:
           this.terminal.writeError(`Unknown command \`${argv[0]}'`);
           return 1;

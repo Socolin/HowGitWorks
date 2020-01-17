@@ -19,4 +19,8 @@ export class GitTreeObject implements IGitObject {
     this.hash = hash;
     this.children = children;
   }
+
+  static fromSerialized(serialized: any): GitTreeObject {
+    return new GitTreeObject(serialized.hash, serialized.children);
+  }
 }

@@ -12,9 +12,12 @@ import {CdExecutor} from './basic-commands/cd-executor';
 import {LsExecutor} from './basic-commands/ls-executor';
 import {CatExecutor} from './basic-commands/cat-executor';
 import {GitObjectUtil} from './git/utils/git-object-util';
-import {IGitObject} from './git/objects/git-object';
-import {GitStatusCommand} from './git/commands/git-status-command';
 import {GitCommitObject} from './git/objects/git-commit-object';
+import {SaveExecutor} from './basic-commands/save-executor';
+import {LoadExecutor} from './basic-commands/load-executor';
+import {ContextSerializer} from './utils/context-serializer';
+import {ContextDeserializer} from './utils/context-deserializer';
+import {InitExecutor} from './basic-commands/init-executor';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +36,11 @@ import {GitCommitObject} from './git/objects/git-commit-object';
     LsExecutor,
     CatExecutor,
     GitObjectUtil,
+    ContextSerializer,
+    ContextDeserializer,
+    InitExecutor,
+    SaveExecutor,
+    LoadExecutor
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -43,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private readonly shellExecutor: ShellExecutor,
     private readonly terminal: Terminal,
+    private readonly contextDeserializer: ContextDeserializer,
     public readonly context: Context,
   ) {
   }
@@ -53,6 +62,20 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const lastContextName = localStorage.getItem('lastContext');
+    if (lastContextName) {
+      const data = localStorage.getItem('savedContext:' + lastContextName);
+      if (data === null) {
+        this.terminal.writeError(`Context ${lastContextName} not found`);
+      }
+
+      const loadedContext = this.contextDeserializer.deserialize(data);
+      this.context.repository = loadedContext.repository;
+      this.context.workingDirectory = loadedContext.workingDirectory;
+      this.context.root = loadedContext.root;
+      this.terminal.write('Context loaded: ' + lastContextName + ' To reset to an init state, type `init`');
+
+    }
     this.subscription.add(this.terminal.onLineWrite.subscribe(() => {
       setTimeout(() => {
         this.terminalOutput.nativeElement.scrollTop = this.terminalOutput.nativeElement.scrollHeight;

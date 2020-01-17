@@ -12,4 +12,8 @@ export class GitBlobObject implements IGitObject {
     this.size = size;
     this.text = text;
   }
+
+  static fromSerialized(serialized: any): GitBlobObject {
+    return new GitBlobObject(serialized.hash, serialized.text, serialized.size);
+  }
 }
