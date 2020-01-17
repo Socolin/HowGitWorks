@@ -1,3 +1,6 @@
+:host {
+  font-size: 18px;
+}
 .terminal {
   font-family: monospace;
   white-space: pre;
@@ -30,6 +33,35 @@
   .inline-file-content {
     color: cornflowerblue;
   }
+  .objects,
+  .refs {
+    > div {
+      margin-left: 16px;
+      > div {
+        margin-left: 16px;
+      }
+    }
+  }
+
+  .objects {
+
+  }
+
+  .git-object-type {
+    margin-right: 8px;
+  }
+  .git-object-type-tree:before {
+    content: 'T';
+    background-color: lightskyblue;
+  }
+  .git-object-type-commit:before {
+    content: 'C';
+    background-color: palegreen;
+  }
+  .git-object-type-blob:before {
+    content: 'B';
+    background-color: lightpink;
+  }
 }
 
 .files {
@@ -45,4 +77,15 @@
 .index {
   font-family: monospace;
   white-space: pre;
+}
+
+.history {
+  .hash {
+    font-family: monospace;
+  }
+  .commits {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-column-gap: 16px;
+  }
 }

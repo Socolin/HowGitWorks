@@ -1,4 +1,4 @@
-<div class="terminal">
+<div class="terminal" (click)="command.focus()">
   <div class="output" #terminalOutput>
     <div>
       <div *ngFor="let line of terminal.lines" [class.error]="line.level === 'error'">{{line.text}}</div>
@@ -22,14 +22,22 @@
   <h2>.git</h2>
   <div *ngIf="context.repository" class="repository">
     <div>HEAD <span class="inline-file-content">{{context.repository.HEAD}}</span></div>
-    <div>objects/</div>
-    <div *ngFor="let hash of context.repository.objects | keyvalue">
-      {{hash.key}}
+    <div class="objects">
+      <span>objects/</span>
+      <div *ngFor="let objectWithHash of context.repository.objects | keyvalue"
+           (click)="openObject(objectWithHash.value);">
+        <span [ngClass]="['git-object-type-'+objectWithHash.value.type,'git-object-type']"></span>
+        <span>{{objectWithHash.key}}</span>
+      </div>
     </div>
-    <div>refs/</div>
-    <div>    heads/</div>
-    <div *ngFor="let ref of context.repository.refs.heads | keyvalue">
-      <span>        {{ref.key}} <span class="inline-file-content">{{ref.value}}</span></span>
+    <div class="refs">
+      <span>refs/</span>
+      <div>
+        <span>heads/</span>
+        <div *ngFor="let ref of context.repository.refs.heads | keyvalue">
+          <span>{{ref.key}} <span class="inline-file-content">{{ref.value}}</span></span>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -38,9 +46,9 @@
 
 <div>
   <h2>History</h2>
-  <div *ngIf="context.repository">
-    <div *ngFor="let commit of getHistory()">
-      {{commit.hash}} {{commit.message}}
+  <div *ngIf="context.repository" class="history">
+    <div *ngFor="let commit of getHistory()" class="commits">
+      <span class="hash">{{commit.hash.substr(0, 8)}}</span> <span>{{commit.message}}</span> <span>{{commit.author}}</span>
     </div>
   </div>
 

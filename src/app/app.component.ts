@@ -18,6 +18,7 @@ import {LoadExecutor} from './basic-commands/load-executor';
 import {ContextSerializer} from './utils/context-serializer';
 import {ContextDeserializer} from './utils/context-deserializer';
 import {InitExecutor} from './basic-commands/init-executor';
+import {IGitObject} from './git/objects/git-object';
 
 @Component({
   selector: 'app-root',
@@ -107,5 +108,9 @@ export class AppComponent implements OnInit, OnDestroy {
       currentHash = commitObject.parents[0];
     }
     return history;
+  }
+
+  openObject(value: IGitObject) {
+
   }
 }
