@@ -28,6 +28,14 @@ export class GitAddCommand {
       return 1;
     }
 
+    // FIXME: It should delete files that match directory:
+    // if a file `file1` is in the index
+    // and we delete it on the file system
+    // and create a directory named `file1`
+    // and create a file in `file1/file2`
+    // and git add `file1/file2`
+    // then the index should only contains file1/file2
+
     const args = this.argvParser.parse(argv);
 
     let files = args.values;

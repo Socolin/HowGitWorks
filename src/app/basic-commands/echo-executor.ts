@@ -16,7 +16,7 @@ export class EchoExecutor {
     const redirectIndex = str.indexOf('>');
     if (redirectIndex !== -1) {
       const redirectTarget = str.substr(redirectIndex + 1).trim();
-      str = str.substr(0, redirectIndex);
+      str = str.substr(0, redirectIndex).trim();
       this.fileSystemUtil.writeFile(context, redirectTarget, str + '\n');
     } else {
       this.terminal.write(str);

@@ -14,6 +14,7 @@ import {CatExecutor} from './basic-commands/cat-executor';
 import {GitObjectUtil} from './git/utils/git-object-util';
 import {IGitObject} from './git/objects/git-object';
 import {GitStatusCommand} from './git/commands/git-status-command';
+import {GitCommitObject} from './git/objects/git-commit-object';
 
 @Component({
   selector: 'app-root',
@@ -63,7 +64,25 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  getObjectsHash(objects: {[hash: string]: IGitObject}) {
-    return Object.keys(objects);
+  getHistory(): GitCommitObject[] {
+    const history = [];
+    const currentBranch = 'master'; // FIXME: from HEAD this.context.repository.HEAD
+    let currentHash = currentBranch ? this.context.repository.refs.heads[currentBranch] : this.context.repository.HEAD;
+    while (currentHash) {
+      const commitObject = this.context.repository.objects[currentHash];
+      if (!commitObject) {
+        console.error('Missing commit object: ' + currentHash);
+        break;
+      }
+      if (!(commitObject instanceof GitCommitObject)) {
+        console.error(`Invalid object found. Expected ${currentHash} to be a commit but was ${commitObject.type}`);
+        break;
+      }
+
+      history.push(commitObject);
+      // FIXME: handle merge
+      currentHash = commitObject.parents[0];
+    }
+    return history;
   }
 }

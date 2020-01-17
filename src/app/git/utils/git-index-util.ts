@@ -1,13 +1,14 @@
 import {Context} from '../../models/context';
-import {GitHash} from '../objects/types';
-import {IndexEntry, IndexType} from '../git-index';
+import {GitFileType, GitHash} from '../objects/types';
+import {IndexEntry} from '../git-index';
 
 export class GitIndexUtil {
   addFileToIndex(context: Context, gitRelativePath: string, hash: GitHash) {
     const indexEntry: IndexEntry = {
       path: gitRelativePath,
-      type: IndexType.File,
-      mode: '644',
+      type: GitFileType.RegularFile,
+      flags: {},
+      mode: 0o644,
       objectHash: hash
     };
 

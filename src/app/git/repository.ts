@@ -21,7 +21,16 @@ export class Repository {
 
   constructor() {
     this.index = new GitIndex();
+    this.refs = {
+      heads: {},
+      tags: {}
+    };
     this.objects = {};
-    this.config = {};
+    this.config = {
+      user: {
+        name: 'John Doe',
+        email: 'john.doe@example.com'
+      }
+    };
   }
 }

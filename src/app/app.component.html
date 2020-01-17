@@ -21,12 +21,16 @@
 <div>
   <h2>.git</h2>
   <div *ngIf="context.repository" class="repository">
-    <div>HEAD ({{context.repository.HEAD}})</div>
+    <div>HEAD <span class="inline-file-content">{{context.repository.HEAD}}</span></div>
     <div>objects/</div>
-    <div *ngFor="let hash of getObjectsHash(context.repository.objects)">
-      {{hash}}
+    <div *ngFor="let hash of context.repository.objects | keyvalue">
+      {{hash.key}}
     </div>
     <div>refs/</div>
+    <div>    heads/</div>
+    <div *ngFor="let ref of context.repository.refs.heads | keyvalue">
+      <span>        {{ref.key}} <span class="inline-file-content">{{ref.value}}</span></span>
+    </div>
 
   </div>
 
@@ -34,6 +38,11 @@
 
 <div>
   <h2>History</h2>
+  <div *ngIf="context.repository">
+    <div *ngFor="let commit of getHistory()">
+      {{commit.hash}} {{commit.message}}
+    </div>
+  </div>
 
 </div>
 
@@ -45,7 +54,7 @@
   <h2>index</h2>
   <div class="index" *ngIf="context?.repository?.index">
     <div *ngFor="let index of context.repository.index.files">
-      <span>{{index.type}}00{{index.mode}} {{index.path}} {{index.objectHash}}</span>
+      <span>{{index.type.toString(8)}}{{index.mode.toString(8).padStart(4, '0')}} {{index.path}} {{index.objectHash}}</span>
     </div>
   </div>
 </div>
