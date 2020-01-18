@@ -45,9 +45,9 @@ export class GitCommitCommand {
     const committer = author;
     const timestamp = new Date().getTime() / 1000;
     const timeZoneOffsetInMinutes = new Date().getTimezoneOffset() * -1;
-    const timezone =
-      (timeZoneOffsetInMinutes / 60).toString().padStart(2, '0')
-      + (timeZoneOffsetInMinutes % 60).toString().padStart(2, '0');
+    const timezone = (timeZoneOffsetInMinutes < 0 ? '-' : '') +
+      Math.abs(timeZoneOffsetInMinutes / 60).toString().padStart(2, '0')
+      + Math.abs(timeZoneOffsetInMinutes % 60).toString().padStart(2, '0');
     const message = args.options.message as string;
     const commit = this.gitObjectUtil.hashCommit(treeHash, message, author, committer, timestamp, timezone, parents);
     this.context.repository.objects[commit.hash] = commit;
