@@ -7,6 +7,7 @@ import {FileSystemUtil} from '../utils/file-system-util';
 import {GitObjectUtil} from './utils/git-object-util';
 import {GitStatusCommand} from './commands/git-status-command';
 import {GitCommitCommand} from './commands/git-commit-command';
+import {GitBranchCommand} from './commands/git-branch-command';
 
 @Injectable()
 export class GitExecutor {
@@ -34,6 +35,9 @@ export class GitExecutor {
         break;
       case 'commit':
         new GitCommitCommand(this.terminal, context, this.fileSystemUtil).execute(argv.slice(1));
+        break;
+      case 'branch':
+        new GitBranchCommand(this.terminal, context, this.fileSystemUtil).execute(argv.slice(1));
         break;
       default:
         this.terminal.writeError(`git: Unknown sub-command: \`${argv[0]}'`);
