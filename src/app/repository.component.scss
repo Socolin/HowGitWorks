@@ -1,0 +1,70 @@
+:host {
+  font-family: "Roboto Mono", monospace;
+
+  .file-content {
+    overflow: auto;
+    padding-left: 4px;
+    margin-left: 4px;
+    border: 1px solid black;
+  }
+
+  .objects,
+  .refs {
+    white-space: nowrap;
+
+    > div {
+      margin-left: 4px;
+      border-left: 1px solid black;
+    }
+  }
+
+  .objects {
+    .object-hash {
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+
+      mat-icon {
+        margin-right: 8px;
+      }
+
+      span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+
+    .file-content {
+      margin-left: 40px;
+    }
+  }
+
+  .refs {
+    > div {
+      padding-left: 16px;
+
+      > div {
+        padding-left: 16px;
+      }
+    }
+  }
+
+  .git-object-type {
+    margin-right: 8px;
+  }
+
+  .git-object-type-tree:before {
+    content: 'T';
+    background-color: lightskyblue;
+  }
+
+  .git-object-type-commit:before {
+    content: 'C';
+    background-color: palegreen;
+  }
+
+  .git-object-type-blob:before {
+    content: 'B';
+    background-color: lightpink;
+  }
+}

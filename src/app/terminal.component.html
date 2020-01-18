@@ -1,0 +1,14 @@
+<div (click)="command.focus()">
+  <div class="output" #terminalOutput>
+    <div>
+      <div *ngFor="let line of terminal.lines" [class.error]="line.level === 'error'">{{line.text}}</div>
+    </div>
+  </div>
+  <label class="input">
+    <span>$</span>
+    <span contenteditable="true"
+          class="command"
+          #command
+          (keydown.enter)="execute(command.textContent); command.textContent = ''; $event.preventDefault()"></span>
+  </label>
+</div>

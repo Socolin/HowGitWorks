@@ -43,7 +43,7 @@ export class GitCommitCommand {
     // FIXME: git config util to read configs & throw if missing & set config (git config command ?)
     const author = `${this.context.repository.config.user.name} <${this.context.repository.config.user.email}>`;
     const committer = author;
-    const timestamp = new Date().getTime() / 1000;
+    const timestamp = Math.floor(new Date().getTime() / 1000);
     const timeZoneOffsetInMinutes = new Date().getTimezoneOffset() * -1;
     const timezone = (timeZoneOffsetInMinutes < 0 ? '-' : '') +
       Math.abs(timeZoneOffsetInMinutes / 60).toString().padStart(2, '0')

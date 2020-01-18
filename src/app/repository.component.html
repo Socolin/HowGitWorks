@@ -1,0 +1,75 @@
+<div (click)="toggleExpandFile('.git/HEAD')" class="selectable">HEAD</div>
+<div class="file-content highlight-selectable selectable " *ngIf="expandedFile['.git/HEAD']"
+     [class.highlighted]="highlightService.isHeadHighlighted(repository.HEAD)"
+     (click)="highlightService.highlightHead(repository.HEAD)">{{repository.HEAD}}</div>
+<div class="config">
+  <span>config</span>
+</div>
+<div class="objects">
+  <span>objects/</span>
+
+  <div *ngFor="let objectWithHash of repository.objects | keyvalue" class="object">
+
+    <div class="object-hash">
+      <ng-container [ngSwitch]="objectWithHash.value.type">
+        <ng-container *ngSwitchCase="'blob'">
+          <mat-icon matTooltip="blob">insert_drive_file</mat-icon>
+          <span class="cdk-visually-hidden">blob</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'commit'">
+          <mat-icon matTooltip="commit">linear_scale</mat-icon>
+          <span class="cdk-visually-hidden">commit</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'tree'">
+          <mat-icon matTooltip="tree">account_tree</mat-icon>
+          <span class="cdk-visually-hidden">tree</span>
+        </ng-container>
+      </ng-container>
+
+      <span
+        (click)="toggleExpandFile('.git/objects/' + objectWithHash.key);highlightService.highlight(objectWithHash.key)"
+        class="highlight-selectable selectable"
+        [class.highlighted]="highlightService.isHeadHighlighted(objectWithHash.key)">{{objectWithHash.key}}</span>
+    </div>
+
+    <div class="file-content" *ngIf="expandedFile['.git/objects/' + objectWithHash.key]">
+      <ng-container [ngSwitch]="objectWithHash.value.type">
+        <ng-container *ngSwitchCase="'blob'">
+          <app-git-object-blob [blob]="objectWithHash.value"></app-git-object-blob>
+        </ng-container>
+        <ng-container *ngSwitchCase="'commit'">
+          <app-git-object-commit [commit]="objectWithHash.value"></app-git-object-commit>
+        </ng-container>
+        <ng-container *ngSwitchCase="'tree'">
+          <app-git-object-tree [tree]="objectWithHash.value"></app-git-object-tree>
+        </ng-container>
+      </ng-container>
+    </div>
+
+  </div>
+</div>
+
+<div class="index">
+  <span (click)="toggleExpandFile('.git/index')" class="selectable">index</span>
+  <div class="file-content" *ngIf="repository?.index && expandedFile['.git/index']">
+    <app-git-index [index]="repository.index"></app-git-index>
+  </div>
+</div>
+
+<div class="refs">
+  <span>refs/</span>
+  <div>
+    <span>heads/</span>
+    <div *ngFor="let ref of repository.refs.heads | keyvalue">
+          <span (click)="toggleExpandFile('.git/refs/head/' + ref.key)"
+                class="highlight-selectable selectable "
+                [class.highlighted]="highlightService.isHighlighted('refs/heads/' + ref.key)">{{ref.key}}</span>
+      <div class="file-content" *ngIf="expandedFile['.git/refs/head/' + ref.key]">
+            <span class="highlight-selectable selectable"
+                  [class.highlighted]="highlightService.isHighlighted(ref.value)"
+                  (click)="highlightService.highlight(ref.value)">{{ref.value}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+

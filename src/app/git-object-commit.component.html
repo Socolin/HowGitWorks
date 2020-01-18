@@ -1,0 +1,25 @@
+<div *ngFor="let parentHash of commit.parents">
+  <span>parent </span>
+  <span class="highlight-selectable selectable"
+        [class.highlighted]="highlightService.isHeadHighlighted(parentHash)"
+        (click)="highlightService.highlight(parentHash)">
+    {{parentHash}}
+  </span>
+</div>
+<div>
+  <span>tree </span>
+  <span class="highlight-selectable selectable"
+        [class.highlighted]="highlightService.isHeadHighlighted(commit.tree)"
+        (click)="highlightService.highlight(commit.tree)">
+    {{commit.tree}}
+  </span>
+</div>
+<div>
+  author {{commit.author}} {{commit.timestamp}} {{commit.timezone}}
+</div>
+<div>
+  committer {{commit.committer}} {{commit.timestamp}} {{commit.timezone}}
+</div>
+<div class="message">
+  <pre>{{commit.message}}</pre>
+</div>

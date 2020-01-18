@@ -1,102 +1,30 @@
+@import "styles/responsive-utils";
+
 :host {
+  padding: 16px;
   font-size: 18px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "terminal files"
-    "repository history"
-    "editor editor";
-
-  .highlight-selectable {
-
-  }
-  .highlighted {
-    font-weight: bold;
+  grid-gap: 8px;
+  grid-template-columns: calc(100vw - 32px);
+  grid-template-areas: "terminal" "repository" "files" "history";
+  @include for-tablet-landscape-up {
+    grid-template-columns: 50vw 1fr;
+    grid-template-areas: "terminal files" "repository history";
   }
 
   .terminal {
     grid-area: terminal;
     font-family: "Roboto Mono", monospace;
-    white-space: pre;
-
-    .output {
-      overflow-y: auto;
-      display: flex;
-      flex-flow: column nowrap;
-      height: 200px;
-
-      > :first-child {
-        margin-top: auto !important;
-      }
-    }
-
-    .input {
-      display: grid;
-      grid-template-columns: 8px 1fr;
-      grid-gap: 8px;
-
-    }
-
-    .error {
-      color: darkred;
-    }
   }
 
   .repository {
     grid-area: repository;
-    font-family: "Roboto Mono", monospace;
-    white-space: pre;
-
-    .inline-file-content {
-      color: cornflowerblue;
-    }
-
-    .objects,
-    .refs {
-      > div {
-        margin-left: 16px;
-        padding-left: 8px;
-        border-left: 1px solid black;
-        > div {
-          margin-left: 16px;
-        }
-      }
-    }
-
-    .file-content {
-      padding-left: 4px;
-      margin-left: 16px;
-      border: 1px solid black;
-    }
-
-    .git-object-type {
-      margin-right: 8px;
-    }
-
-    .git-object-type-tree:before {
-      content: 'T';
-      background-color: lightskyblue;
-    }
-
-    .git-object-type-commit:before {
-      content: 'C';
-      background-color: palegreen;
-    }
-
-    .git-object-type-blob:before {
-      content: 'B';
-      background-color: lightpink;
-    }
   }
 
   .files {
     grid-area: files;
     font-family: "Roboto Mono", monospace;
-    white-space: pre;
-  }
 
-  .editor {
-    grid-area: editor;
   }
 
   .history {
@@ -108,8 +36,14 @@
 
     .commits {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto minmax(100px, 1fr) minmax(50px, 1fr);
       grid-column-gap: 16px;
+
+      .author {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 

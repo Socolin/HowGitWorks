@@ -1,0 +1,33 @@
+:host {
+  > div {
+    border: 1px solid lightgray;
+
+    .output {
+      overflow-y: auto;
+      display: flex;
+      flex-flow: column nowrap;
+      height: 240px;
+      padding-left: 4px;
+      padding-right: 4px;
+
+      > :first-child {
+        margin-top: auto !important;
+      }
+
+      .error {
+        color: darkred;
+      }
+    }
+
+    .input {
+      display: grid;
+      grid-template-columns: 8px 1fr;
+      grid-gap: 8px;
+
+      > span {
+        padding: 4px;
+      }
+    }
+
+  }
+}

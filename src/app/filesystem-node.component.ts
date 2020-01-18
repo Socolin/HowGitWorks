@@ -10,6 +10,8 @@ export class FilesystemNodeComponent implements OnInit {
   @Input()
   file: File;
 
+  displayContent: boolean = false;
+
   constructor() {
   }
 

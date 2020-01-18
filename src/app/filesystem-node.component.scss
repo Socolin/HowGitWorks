@@ -1,6 +1,19 @@
 :host {
   display: block;
+
   app-filesystem-node {
     margin-left: 16px;
+  }
+
+  .selectable {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .file-content {
+    overflow: auto;
+    padding-left: 4px;
+    margin-left: 4px;
+    border: 1px solid black;
   }
 }
