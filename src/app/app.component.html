@@ -11,23 +11,69 @@
           (keydown.enter)="execute(command.textContent); command.textContent = ''; $event.preventDefault()"></span>
   </label>
 </div>
-<div>
+<div class="files">
   <h2>Files</h2>
-  <div class="files">
+  <div>
     <app-filesystem-node [file]="context.root"></app-filesystem-node>
   </div>
 </div>
 
-<div>
-  <h2>.git</h2>
+<div class="repository">
+  <h2>.git/</h2>
   <div *ngIf="context.repository" class="repository">
-    <div>HEAD <span class="inline-file-content">{{context.repository.HEAD}}</span></div>
+    <div (click)="toggleExpandFile('.git/HEAD')">HEAD</div>
+    <div class="file-content" *ngIf="expandedFile['.git/HEAD']"
+         [class.highlighted]="isHeadHighlighted(context.repository.HEAD)"
+         (click)="highlightHead(context.repository.HEAD)">{{context.repository.HEAD}}</div>
+    <div class="config">
+      <span>config</span>
+    </div>
     <div class="objects">
       <span>objects/</span>
-      <div *ngFor="let objectWithHash of context.repository.objects | keyvalue"
-           (click)="openObject(objectWithHash.value);">
+      <div *ngFor="let objectWithHash of context.repository.objects | keyvalue">
         <span [ngClass]="['git-object-type-'+objectWithHash.value.type,'git-object-type']"></span>
-        <span>{{objectWithHash.key}}</span>
+        <span (click)="toggleExpandFile('.git/objects/' + objectWithHash.key);highlightedObject = objectWithHash.key"
+              [class.highlighted]="highlightedObject === objectWithHash.key">{{objectWithHash.key}}</span>
+        <div class="file-content" *ngIf="expandedFile['.git/objects/' + objectWithHash.key]">
+          <ng-container [ngSwitch]="objectWithHash.value.type">
+            <ng-container *ngSwitchCase="'blob'">
+              <pre>{{objectWithHash.value.text}}</pre>
+            </ng-container>
+            <ng-container *ngSwitchCase="'commit'">
+              <div *ngFor="let parentHash of objectWithHash.value.parents">
+                <span>parent</span> <span class="highlight-selectable"
+                             [class.highlighted]="highlightedObject === parentHash"
+                             (click)="highlightedObject = parentHash">{{parentHash}}</span>
+              </div>
+              <div>tree <span class="highlight-selectable"
+                              [class.highlighted]="highlightedObject === objectWithHash.value.tree"
+                              (click)="highlightedObject = objectWithHash.value.tree">{{objectWithHash.value.tree}}</span>
+              </div>
+              <div>author {{objectWithHash.value.author}} {{objectWithHash.value.timestamp}} {{objectWithHash.value.timezone}}</div>
+              <div>committer {{objectWithHash.value.committer}} {{objectWithHash.value.timestamp}} {{objectWithHash.value.timezone}}</div>
+              <div><pre>{{objectWithHash.value.message}}</pre></div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'tree'">
+              <div *ngFor="let child of objectWithHash.value.children">
+                {{child.mode.type.toString(8)}}{{child.mode.perm.toString(8).padStart(4, '0')}} {{child.mode.type === 32 ? 'tree' : 'blob'}}
+                <span class="highlight-selectable"
+                      [class.highlighted]="highlightedObject === child.objectHash"
+                      (click)="highlightedObject = child.objectHash">{{child.objectHash}}</span> {{child.path}}
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="index">
+      <span (click)="toggleExpandFile('.git/index')">index</span>
+      <div class="file-content" *ngIf="context?.repository?.index && expandedFile['.git/index']">
+        <div *ngFor="let index of context.repository.index.files">
+          <span>{{index.type.toString(8)}}{{index.mode.toString(8).padStart(4, '0')}} {{index.path}} <span
+            (click)="highlightedObject = index.objectHash"
+            [class.highlighted]="highlightedObject === index.objectHash">{{index.objectHash}}</span></span>
+        </div>
       </div>
     </div>
     <div class="refs">
@@ -35,7 +81,13 @@
       <div>
         <span>heads/</span>
         <div *ngFor="let ref of context.repository.refs.heads | keyvalue">
-          <span>{{ref.key}} <span class="inline-file-content">{{ref.value}}</span></span>
+          <span (click)="toggleExpandFile('.git/refs/head/' + ref.key)"
+                [class.highlighted]="highlightedObject === 'refs/heads/' + ref.key">{{ref.key}}</span>
+          <div class="file-content" *ngIf="expandedFile['.git/refs/head/' + ref.key]">
+            <span class="highlight-selectable"
+                  [class.highlighted]="highlightedObject === ref.value"
+                  (click)="highlightedObject = ref.value">{{ref.value}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -44,25 +96,22 @@
 
 </div>
 
-<div>
+<div class="history">
   <h2>History</h2>
-  <div *ngIf="context.repository" class="history">
+  <div *ngIf="context.repository">
     <div *ngFor="let commit of getHistory()" class="commits">
-      <span class="hash">{{commit.hash.substr(0, 8)}}</span> <span>{{commit.message}}</span> <span>{{commit.author}}</span>
+      <span class="hash">
+        <span [class.highlighted]="highlightedObject === commit.hash"
+              class="highlight-selectable"
+              (click)="highlightedObject = commit.hash">{{commit.hash.substr(0, 8)}}</span>
+      </span>
+      <span>{{commit.message}}</span>
+      <span>{{commit.author}}</span>
     </div>
   </div>
 
 </div>
 
-<div>
+<div class="editor">
   <h2>Editor</h2>
-</div>
-
-<div>
-  <h2>index</h2>
-  <div class="index" *ngIf="context?.repository?.index">
-    <div *ngFor="let index of context.repository.index.files">
-      <span>{{index.type.toString(8)}}{{index.mode.toString(8).padStart(4, '0')}} {{index.path}} {{index.objectHash}}</span>
-    </div>
-  </div>
 </div>

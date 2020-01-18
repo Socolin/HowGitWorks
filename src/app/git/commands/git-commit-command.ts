@@ -5,6 +5,7 @@ import {FileSystemUtil} from '../../utils/file-system-util';
 import {GitObjectUtil} from '../utils/git-object-util';
 import {GitIndexUtil} from '../utils/git-index-util';
 import {GitTreeUtil} from '../utils/git-tree-util';
+import {GitBranchUtil} from '../utils/git-branch-util';
 
 export class GitCommitCommand {
   private readonly argvParser: ArgvParser;
@@ -13,6 +14,7 @@ export class GitCommitCommand {
     private readonly terminal: Terminal,
     private readonly context: Context,
     private readonly fileSystemUtil: FileSystemUtil,
+    private readonly gitBranchUtil: GitBranchUtil = new GitBranchUtil(),
     private readonly gitObjectUtil: GitObjectUtil = new GitObjectUtil(),
     private readonly gitTreeUtil: GitTreeUtil = new GitTreeUtil(gitObjectUtil),
     private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(),
@@ -29,7 +31,7 @@ export class GitCommitCommand {
       return 1;
     }
 
-    const currentBranch = 'master'; // FIXME: retrieve from HEAD
+    const currentBranch = this.gitBranchUtil.getActiveBranch (this.context.repository);
     const currentHeadHash = currentBranch ? this.context.repository.refs.heads[currentBranch] : this.context.repository.HEAD;
     let parents = [];
     if (currentHeadHash) {

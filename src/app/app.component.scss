@@ -1,91 +1,117 @@
 :host {
   font-size: 18px;
-}
-.terminal {
-  font-family: monospace;
-  white-space: pre;
-  .output {
-    overflow-y: auto;
-    display: flex;
-    flex-flow: column nowrap;
-    height: 200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "terminal files"
+    "repository history"
+    "editor editor";
 
-    > :first-child {
-      margin-top: auto !important;
-    }
-  }
-
-  .input {
-    display: grid;
-    grid-template-columns: 8px 1fr;
-    grid-gap: 8px;
+  .highlight-selectable {
 
   }
-
-  .error {
-    color: darkred;
+  .highlighted {
+    font-weight: bold;
   }
-}
 
-.repository {
-  font-family: monospace;
-  white-space: pre;
-  .inline-file-content {
-    color: cornflowerblue;
-  }
-  .objects,
-  .refs {
-    > div {
-      margin-left: 16px;
-      > div {
-        margin-left: 16px;
+  .terminal {
+    grid-area: terminal;
+    font-family: "Roboto Mono", monospace;
+    white-space: pre;
+
+    .output {
+      overflow-y: auto;
+      display: flex;
+      flex-flow: column nowrap;
+      height: 200px;
+
+      > :first-child {
+        margin-top: auto !important;
       }
     }
+
+    .input {
+      display: grid;
+      grid-template-columns: 8px 1fr;
+      grid-gap: 8px;
+
+    }
+
+    .error {
+      color: darkred;
+    }
   }
 
-  .objects {
+  .repository {
+    grid-area: repository;
+    font-family: "Roboto Mono", monospace;
+    white-space: pre;
 
+    .inline-file-content {
+      color: cornflowerblue;
+    }
+
+    .objects,
+    .refs {
+      > div {
+        margin-left: 16px;
+        padding-left: 8px;
+        border-left: 1px solid black;
+        > div {
+          margin-left: 16px;
+        }
+      }
+    }
+
+    .file-content {
+      padding-left: 4px;
+      margin-left: 16px;
+      border: 1px solid black;
+    }
+
+    .git-object-type {
+      margin-right: 8px;
+    }
+
+    .git-object-type-tree:before {
+      content: 'T';
+      background-color: lightskyblue;
+    }
+
+    .git-object-type-commit:before {
+      content: 'C';
+      background-color: palegreen;
+    }
+
+    .git-object-type-blob:before {
+      content: 'B';
+      background-color: lightpink;
+    }
   }
 
-  .git-object-type {
-    margin-right: 8px;
+  .files {
+    grid-area: files;
+    font-family: "Roboto Mono", monospace;
+    white-space: pre;
   }
-  .git-object-type-tree:before {
-    content: 'T';
-    background-color: lightskyblue;
-  }
-  .git-object-type-commit:before {
-    content: 'C';
-    background-color: palegreen;
-  }
-  .git-object-type-blob:before {
-    content: 'B';
-    background-color: lightpink;
-  }
-}
 
-.files {
-  font-family: monospace;
-  white-space: pre;
-}
-
-.files {
-  font-family: monospace;
-  white-space: pre;
-}
-
-.index {
-  font-family: monospace;
-  white-space: pre;
-}
-
-.history {
-  .hash {
-    font-family: monospace;
+  .editor {
+    grid-area: editor;
   }
-  .commits {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-column-gap: 16px;
+
+  .history {
+    grid-area: history;
+
+    .hash {
+      font-family: "Roboto Mono", monospace;
+    }
+
+    .commits {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-column-gap: 16px;
+    }
   }
+
+
 }

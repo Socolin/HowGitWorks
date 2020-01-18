@@ -19,6 +19,7 @@ import {ContextSerializer} from './utils/context-serializer';
 import {ContextDeserializer} from './utils/context-deserializer';
 import {InitExecutor} from './basic-commands/init-executor';
 import {IGitObject} from './git/objects/git-object';
+import {GitBranchUtil} from './git/utils/git-branch-util';
 
 @Component({
   selector: 'app-root',
@@ -41,19 +42,23 @@ import {IGitObject} from './git/objects/git-object';
     ContextDeserializer,
     InitExecutor,
     SaveExecutor,
-    LoadExecutor
+    LoadExecutor,
+    GitBranchUtil
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
   @ViewChild('terminalOutput', {static: true})
   private terminalOutput: ElementRef;
+  public expandedFile: { [path: string]: boolean } = {};
+  public highlightedObject?: string;
 
   constructor(
     private readonly shellExecutor: ShellExecutor,
     private readonly terminal: Terminal,
     private readonly contextDeserializer: ContextDeserializer,
     public readonly context: Context,
+    public readonly gitBranchUtil: GitBranchUtil,
   ) {
   }
 
@@ -90,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getHistory(): GitCommitObject[] {
     const history = [];
-    const currentBranch = 'master'; // FIXME: from HEAD this.context.repository.HEAD
+    const currentBranch = this.gitBranchUtil.getActiveBranch(this.context.repository);
     let currentHash = currentBranch ? this.context.repository.refs.heads[currentBranch] : this.context.repository.HEAD;
     while (currentHash) {
       const commitObject = this.context.repository.objects[currentHash];
@@ -110,7 +115,23 @@ export class AppComponent implements OnInit, OnDestroy {
     return history;
   }
 
-  openObject(value: IGitObject) {
+  toggleExpandFile(path: string) {
+    this.expandedFile[path] = !this.expandedFile[path];
+  }
 
+  highlightHead(head: string) {
+    if (head.startsWith('ref:')) {
+      this.highlightedObject = head.split(' ')[1];
+    } else {
+      this.highlightedObject = head;
+    }
+  }
+
+  isHeadHighlighted(head: string) {
+    if (head.startsWith('ref:')) {
+      return this.highlightedObject === head.split(' ')[1];
+    } else {
+      return this.highlightedObject === head;
+    }
   }
 }

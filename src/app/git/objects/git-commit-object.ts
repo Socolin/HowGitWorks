@@ -4,6 +4,7 @@ import {IGitObject} from './git-object';
 export class GitCommitObject implements IGitObject {
   readonly type = 'commit';
   readonly parents?: GitHash[];
+  readonly tree: GitHash;
   readonly author: string;
   readonly committer: string;
   readonly timestamp: number;
@@ -13,6 +14,7 @@ export class GitCommitObject implements IGitObject {
 
   constructor(
     hash: GitHash,
+    tree: GitHash,
     message: string,
     author: string,
     committer: string,
@@ -21,6 +23,7 @@ export class GitCommitObject implements IGitObject {
     parents?: GitHash[]
   ) {
     this.hash = hash;
+    this.tree = tree;
     this.message = message;
     this.author = author;
     this.committer = committer;
@@ -32,6 +35,7 @@ export class GitCommitObject implements IGitObject {
   static fromSerialized(serialized: any) {
     return new GitCommitObject(
       serialized.hash,
+      serialized.tree,
       serialized.message,
       serialized.author,
       serialized.committer,

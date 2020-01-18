@@ -49,7 +49,7 @@ export class GitObjectUtil {
     fullCommitContent.set(content, header.length);
 
     const hash = sha1(fullCommitContent);
-    return new GitCommitObject(hash, message, author, committer, timestamp, timezone, parents);
+    return new GitCommitObject(hash, treeHash, message, author, committer, timestamp, timezone, parents);
   }
 
   public hashTree(children: GitTreeChild[]): GitTreeObject {
