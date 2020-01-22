@@ -7,6 +7,11 @@ import {GitObjectUtil} from './git-object-util';
 import {GitTreeUtil} from './git-tree-util';
 import {GitTreeChild} from '../objects/git-tree-object';
 
+interface IndexDiffResult {
+  type: 'A' | 'D' | 'M';
+  path: string;
+}
+
 export class GitIndexUtil {
   constructor(
     private readonly gitBranchUtil: GitBranchUtil,
@@ -33,7 +38,7 @@ export class GitIndexUtil {
     }
   }
 
-  diffIndexWithHead(repository: Repository): any[] {
+  diffIndexWithHead(repository: Repository): IndexDiffResult[] {
     const headBranch = this.gitBranchUtil.getActiveBranch(repository);
     const headHash = headBranch ? repository.refs.heads[headBranch] : repository.HEAD;
     const commit = this.gitObjectUtil.getCommit(repository, headHash);
@@ -50,16 +55,27 @@ export class GitIndexUtil {
     }, {} as { [path: string]: IndexEntry });
     const allPaths = Array.from(new Set(Object.keys(childrenAsDictionary).concat(Object.keys(indexAsDictionary)))).sort();
 
-    const result = [];
+    const result: IndexDiffResult[] = [];
     for (const path of allPaths) {
       const indexEntry = indexAsDictionary[path];
       const child = childrenAsDictionary[path];
       if (indexEntry && child) {
-        // Changed
+        if (indexEntry.objectHash !== child.objectHash) {
+          result.push({
+            type: 'M',
+            path
+          });
+        }
       } else if (indexEntry) {
-        // Added
+        result.push({
+          type: 'A',
+          path
+        });
       } else {
-        // Deleted
+        result.push({
+          type: 'D',
+          path
+        });
       }
     }
     return result;

@@ -3,6 +3,7 @@
     border: 1px solid lightgray;
 
     .output {
+      white-space: pre;
       overflow-y: auto;
       display: flex;
       flex-flow: column nowrap;

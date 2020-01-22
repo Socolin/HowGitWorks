@@ -68,9 +68,33 @@ export class GitStatusCommand {
       }
     }
 
-    // FIXME: On branch master
-    // FIXME: Changes to be committed:
-    const diff = this.gitIndexUtil.diffIndexWithHead(this.context.repository);
+    const currentBranch = this.gitBranchUtil.getActiveBranch(this.context.repository);
+    if (currentBranch) {
+      this.terminal.write(`On branch ${currentBranch}`);
+    } else {
+      this.terminal.write(`HEAD detached at ${this.context.repository.HEAD}`);
+    }
+
+    const differences = this.gitIndexUtil.diffIndexWithHead(this.context.repository);
+    if (differences.length) {
+      this.terminal.write(`Changes to be committed:`);
+      this.terminal.write(`  (use "git reset HEAD <file>..." to unstage)`);
+      this.terminal.write('');
+      for (const diff of differences) {
+        switch (diff.type) {
+          case 'A':
+            this.terminal.write(`\tnew file:\t${diff.path}`);
+            break;
+          case 'D':
+            this.terminal.write(`\tdeleted:\t${diff.path}`);
+            break;
+          case 'M':
+            this.terminal.write(`\tmodified:\t${diff.path}`);
+            break;
+        }
+      }
+      this.terminal.write('');
+    }
 
     if (modifiedFiles.length || removedFiles.length) {
       this.terminal.write('Changes not staged for commit:');
