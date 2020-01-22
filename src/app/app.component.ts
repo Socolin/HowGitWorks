@@ -20,6 +20,7 @@ import {ContextDeserializer} from './utils/context-deserializer';
 import {InitExecutor} from './basic-commands/init-executor';
 import {GitBranchUtil} from './git/utils/git-branch-util';
 import {HighlightService} from './highlight-service';
+import {GitModeUtil} from './git/utils/git-mode-util';
 
 @Component({
   selector: 'app-root',
@@ -44,6 +45,7 @@ import {HighlightService} from './highlight-service';
     SaveExecutor,
     LoadExecutor,
     GitBranchUtil,
+    GitModeUtil,
 
     HighlightService
   ]
@@ -54,6 +56,7 @@ export class AppComponent implements OnInit {
     private readonly contextDeserializer: ContextDeserializer,
     public readonly context: Context,
     public readonly gitBranchUtil: GitBranchUtil,
+    public readonly gitObjectUtil: GitObjectUtil,
     public readonly highlightService: HighlightService,
   ) {
   }
@@ -81,19 +84,15 @@ export class AppComponent implements OnInit {
     const currentBranch = this.gitBranchUtil.getActiveBranch(this.context.repository);
     let currentHash = currentBranch ? this.context.repository.refs.heads[currentBranch] : this.context.repository.HEAD;
     while (currentHash) {
-      const commitObject = this.context.repository.objects[currentHash];
-      if (!commitObject) {
-        console.error('Missing commit object: ' + currentHash);
-        break;
+      try {
+        const commitObject = this.gitObjectUtil.getCommit(this.context.repository, currentHash);
+        history.push(commitObject);
+        // FIXME: handle merge
+        currentHash = commitObject.parents[0];
+      } catch (e) {
+        console.log(e.message);
+        currentHash = undefined;
       }
-      if (!(commitObject instanceof GitCommitObject)) {
-        console.error(`Invalid object found. Expected ${currentHash} to be a commit but was ${commitObject.type}`);
-        break;
-      }
-
-      history.push(commitObject);
-      // FIXME: handle merge
-      currentHash = commitObject.parents[0];
     }
     return history;
   }

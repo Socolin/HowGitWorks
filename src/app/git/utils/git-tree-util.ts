@@ -12,6 +12,23 @@ export class GitTreeUtil {
   constructor(private readonly gitObjectUtil: GitObjectUtil) {
   }
 
+  getAllChildrenRecursively(repository: Repository, tree: GitTreeObject, path: string = ''): GitTreeChild[] {
+    const result: GitTreeChild[] = [];
+
+    for (const child of tree.children) {
+      if (child.mode.type === GitFileType.Directory) {
+        const subTree = this.gitObjectUtil.getTree(repository, child.objectHash);
+        for (const gitTreeChild of this.getAllChildrenRecursively(repository, subTree, path + child.path + '/')) {
+          result.push(gitTreeChild);
+        }
+      } else {
+        result.push({...child, path: path + child.path});
+      }
+    }
+
+    return result;
+  }
+
   buildTreeFromIndex(repository: Repository): GitHash {
     const indexAsTree: IndexNode = {};
     for (const file of repository.index.files) {
@@ -46,7 +63,7 @@ export class GitTreeUtil {
       }
     }
     const tree = this.gitObjectUtil.hashTree(children);
-    repository.objects[tree.hash] = tree;
+    this.gitObjectUtil.storeObject(repository, tree);
     return tree;
   }
 

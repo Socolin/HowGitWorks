@@ -51,7 +51,7 @@ export class GitAddCommand {
 
       const object = this.gitObjectUtil.hashBlob(file.content);
       if (!(object.hash in this.context.repository.objects)) {
-        this.context.repository.objects[object.hash] = object;
+        this.gitObjectUtil.storeObject(this.context.repository, object);
         const absolutePath = this.fileSystemUtil.getAbsolutePath(this.context, path);
         const gitRelativePath = absolutePath.substr(1);
         this.gitIndexUtil.addFileToIndex(this.context, gitRelativePath, object.hash);

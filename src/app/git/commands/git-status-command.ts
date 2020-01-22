@@ -6,6 +6,8 @@ import {GitObjectUtil} from '../utils/git-object-util';
 import {GitIndexUtil} from '../utils/git-index-util';
 import {Directory} from '../../models/files';
 import {IndexEntry} from '../git-index';
+import {GitBranchUtil} from '../utils/git-branch-util';
+import {GitTreeUtil} from '../utils/git-tree-util';
 
 export class GitStatusCommand {
   private readonly argvParser: ArgvParser;
@@ -15,7 +17,9 @@ export class GitStatusCommand {
     private readonly context: Context,
     private readonly fileSystemUtil: FileSystemUtil,
     private readonly gitObjectUtil: GitObjectUtil,
-    private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(),
+    private readonly gitBranchUtil: GitBranchUtil = new GitBranchUtil(),
+    private readonly gitTreeUtil: GitTreeUtil = new GitTreeUtil(gitObjectUtil),
+    private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(gitBranchUtil, gitObjectUtil, gitTreeUtil),
   ) {
     this.argvParser = new ArgvParser([
       {name: 'verbose', short: 'v', arg: false},
@@ -66,6 +70,7 @@ export class GitStatusCommand {
 
     // FIXME: On branch master
     // FIXME: Changes to be committed:
+    const diff = this.gitIndexUtil.diffIndexWithHead(this.context.repository);
 
     if (modifiedFiles.length || removedFiles.length) {
       this.terminal.write('Changes not staged for commit:');

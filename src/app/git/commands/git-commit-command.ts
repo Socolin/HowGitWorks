@@ -17,7 +17,7 @@ export class GitCommitCommand {
     private readonly gitBranchUtil: GitBranchUtil = new GitBranchUtil(),
     private readonly gitObjectUtil: GitObjectUtil = new GitObjectUtil(),
     private readonly gitTreeUtil: GitTreeUtil = new GitTreeUtil(gitObjectUtil),
-    private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(),
+    private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(gitBranchUtil, gitObjectUtil, gitTreeUtil),
   ) {
     this.argvParser = new ArgvParser([
       {name: 'verbose', short: 'v', arg: false},
@@ -31,7 +31,7 @@ export class GitCommitCommand {
       return 1;
     }
 
-    const currentBranch = this.gitBranchUtil.getActiveBranch (this.context.repository);
+    const currentBranch = this.gitBranchUtil.getActiveBranch(this.context.repository);
     const currentHeadHash = currentBranch ? this.context.repository.refs.heads[currentBranch] : this.context.repository.HEAD;
     let parents = [];
     if (currentHeadHash) {
@@ -50,7 +50,7 @@ export class GitCommitCommand {
       + Math.abs(timeZoneOffsetInMinutes % 60).toString().padStart(2, '0');
     const message = args.options.message as string;
     const commit = this.gitObjectUtil.hashCommit(treeHash, message, author, committer, timestamp, timezone, parents);
-    this.context.repository.objects[commit.hash] = commit;
+    this.gitObjectUtil.storeObject(this.context.repository, commit);
 
     if (currentBranch) {
       this.context.repository.refs.heads[currentBranch] = commit.hash;

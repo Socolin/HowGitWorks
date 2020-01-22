@@ -1,6 +1,9 @@
 export type GitHash = string;
 
+export const ZeroGitHash = '0000000000000000000000000000000000000000' as GitHash;
+
 export enum GitFileType {
+  None = 0o0,
   RegularFile = 0o10,
   Directory = 0o40,
   Link = 0o12,

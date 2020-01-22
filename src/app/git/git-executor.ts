@@ -8,6 +8,7 @@ import {GitObjectUtil} from './utils/git-object-util';
 import {GitStatusCommand} from './commands/git-status-command';
 import {GitCommitCommand} from './commands/git-commit-command';
 import {GitBranchCommand} from './commands/git-branch-command';
+import {GitDiffTreeCommand} from './commands/git-diff-tree-command';
 
 @Injectable()
 export class GitExecutor {
@@ -38,6 +39,9 @@ export class GitExecutor {
         break;
       case 'branch':
         new GitBranchCommand(this.terminal, context, this.fileSystemUtil).execute(argv.slice(1));
+        break;
+      case 'diff-tree':
+        new GitDiffTreeCommand(this.terminal, context, this.fileSystemUtil).execute(argv.slice(1));
         break;
       default:
         this.terminal.writeError(`git: Unknown sub-command: \`${argv[0]}'`);

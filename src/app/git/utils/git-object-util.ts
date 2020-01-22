@@ -4,11 +4,49 @@ import * as sha1 from 'js-sha1';
 import {GitTreeChild, GitTreeObject} from '../objects/git-tree-object';
 import {GitHash} from '../objects/types';
 import {GitCommitObject} from '../objects/git-commit-object';
+import {Repository} from '../repository';
+import {IGitObject} from '../objects/git-object';
+import {GitModeUtil} from './git-mode-util';
 
 @Injectable()
 export class GitObjectUtil {
-  constructor() {
+  constructor(
+    private readonly gitModeUtil: GitModeUtil = new GitModeUtil()
+  ) {
   }
+
+  public getTree(repository: Repository, hash: GitHash): GitTreeObject {
+    const tree = this.getObject(repository, hash);
+    if (!(tree instanceof GitTreeObject)) {
+      throw new Error(`Invalid object: ${hash} expected to be a tree but was ${tree.type}`);
+    }
+    return tree;
+  }
+
+  public getCommit(repository: Repository, hash: GitHash): GitCommitObject {
+    const commit = this.getObject(repository, hash);
+    if (!(commit instanceof GitCommitObject)) {
+      throw new Error(`Invalid object: ${hash} expected to be a commit but was ${commit.type}`);
+    }
+    return commit;
+  }
+
+  public getObject(repository: Repository, hash: GitHash): IGitObject {
+    const object = repository.objects[hash];
+    if (!object) {
+      const matchingHashes = Object.keys(repository.objects).filter(h => h.startsWith(hash));
+      if (matchingHashes) {
+        if (matchingHashes.length > 1) {
+          console.log(matchingHashes);
+          throw new Error(`Ambiguous hash: ${hash}`);
+        }
+        return repository.objects[matchingHashes[0]];
+      }
+      throw new Error(`Object not found: ${hash}`);
+    }
+    return object;
+  }
+
 
   public hashBlob(content: string): GitBlobObject {
     const fileContent = new TextEncoder().encode(content);
@@ -75,7 +113,7 @@ export class GitObjectUtil {
   }
 
   private buildTreeChildEntry(child: GitTreeChild): Uint8Array {
-    const mode = child.mode.type.toString(8) + child.mode.perm.toString(8).padStart(4, '0');
+    const mode = this.gitModeUtil.formatMode(child.mode);
     const part1 = new TextEncoder().encode(mode + ' ' + child.path + '\0');
     const result = new Uint8Array(part1.length + 20);
 
@@ -84,5 +122,9 @@ export class GitObjectUtil {
       result[part1.length + i] = parseInt(child.objectHash.substr(i * 2, 2), 16);
     }
     return result;
+  }
+
+  storeObject(repository: Repository, object: IGitObject) {
+    repository.objects[object.hash] = object;
   }
 }
