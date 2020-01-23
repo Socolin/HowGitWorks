@@ -1,9 +1,18 @@
 <div (click)="toggleExpandFile('.git/HEAD')" class="selectable">HEAD</div>
-<div class="file-content highlight-selectable selectable " *ngIf="expandedFile['.git/HEAD']"
+<div class="file-content highlight-selectable selectable" *ngIf="expandedFile['.git/HEAD']"
      [class.highlighted]="highlightService.isHeadHighlighted(repository.HEAD)"
      (click)="highlightService.highlightHead(repository.HEAD)">{{repository.HEAD}}</div>
 <div class="config">
-  <span>config</span>
+  <span (click)="toggleExpandFile('config')" class="highlight-selectable selectable">config</span>
+
+  <div *ngIf="expandedFile['config']" class="file-content">
+    <div *ngFor="let configSection of repository.config | keyvalue">
+      <div>[{{configSection.key}}]</div>
+      <div *ngFor="let conf of configSection.value | keyvalue">
+        <span style="white-space: pre">&nbsp;&nbsp;&nbsp;&nbsp;{{conf.key}}={{conf.value}}</span>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="objects">
   <span>objects/</span>
