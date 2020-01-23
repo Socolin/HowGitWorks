@@ -4,7 +4,6 @@
 - single quote string in cmd parser
 - `help` or dialog 
 - Settings
-    - display short hash
     - dark theme
 - colors ?
 - nice history view (with branch & co)

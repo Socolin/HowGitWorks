@@ -9,7 +9,14 @@ import {RepositoryComponent} from './repository.component';
 import {GitObjectBlobComponent} from './git-object-blob.component';
 import {GitObjectCommitComponent} from './git-object-commit.component';
 import {GitObjectTreeComponent} from './git-object-tree.component';
-import {MatIconModule, MatTooltipModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatIconModule,
+  MatSlideToggleModule,
+  MatTooltipModule
+} from '@angular/material';
 import {GitIndexComponent} from './git-index.component';
 import {TerminalComponent} from './terminal.component';
 import {AppConfigService} from './app-config.service';
@@ -21,6 +28,8 @@ import {GitBranchUtil} from './git/utils/git-branch-util';
 import {GitTreeUtil} from './git/utils/git-tree-util';
 import {GitIndexUtil} from './git/utils/git-index-util';
 import {GitDiffTreeUtil} from './git/utils/git-diff-tree-util';
+import {ConfigDialogComponent} from './config-dialog.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,14 +41,25 @@ import {GitDiffTreeUtil} from './git/utils/git-diff-tree-util';
     GitObjectTreeComponent,
     GitIndexComponent,
     TerminalComponent,
-    GitHashPipe
+    GitHashPipe,
+    ConfigDialogComponent,
+  ],
+  entryComponents: [
+    ConfigDialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+
+    MatDialogModule,
+
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatSlideToggleModule
   ],
   providers: [
     AppConfigService,

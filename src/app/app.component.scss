@@ -6,10 +6,14 @@
   display: grid;
   grid-gap: 8px;
   grid-template-columns: calc(100vw - 32px);
-  grid-template-areas: "terminal" "repository" "files" "history";
+  grid-template-areas: "header" "terminal" "repository" "files" "history";
   @include for-tablet-landscape-up {
-    grid-template-columns: 50vw 1fr;
-    grid-template-areas: "terminal files" "repository history";
+    grid-template-columns: 50vw 1fr 230px;
+    grid-template-areas: "header header header" "terminal terminal files" "repository history history";
+  }
+  .header {
+    grid-area: header;
+    text-align: right;
   }
 
   .terminal {

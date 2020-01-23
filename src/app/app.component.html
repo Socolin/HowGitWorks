@@ -1,3 +1,8 @@
+<div class="header">
+  <button mat-icon-button (click)="openConfig()">
+    <mat-icon>settings_applications</mat-icon>
+  </button>
+</div>
 <div class="terminal">
   <h2>Terminal</h2>
   <app-terminal></app-terminal>
@@ -11,7 +16,7 @@
 
 <div class="repository">
   <h2>.git/</h2>
-  <app-repository [repository]="context.repository">
+  <app-repository *ngIf="context.repository" [repository]="context.repository">
   </app-repository>
 </div>
 

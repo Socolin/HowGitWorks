@@ -2,7 +2,8 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {AppConfigService} from './app-config.service';
 
 @Pipe({
-  name: 'gitHash'
+  name: 'gitHash',
+  pure: false
 })
 export class GitHashPipe implements PipeTransform {
   constructor(private readonly appConfigService: AppConfigService) {

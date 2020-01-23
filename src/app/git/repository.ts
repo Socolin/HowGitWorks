@@ -32,7 +32,7 @@ export class Repository {
     this.config = {
       user: {
         name: 'John Doe',
-        email: 'john.doe@example.com'
+        email: 'j@d.com'
       }
     };
   }

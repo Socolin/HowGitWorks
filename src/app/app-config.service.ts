@@ -2,6 +2,6 @@ export class AppConfigService {
   shortHash: boolean;
 
   constructor() {
-    this.shortHash = true;
+    this.shortHash = false;
   }
 }

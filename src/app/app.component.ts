@@ -1,8 +1,7 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ShellExecutor} from './shell-executor';
 import {Terminal} from './utils/terminal';
 import {CommandParser} from './utils/command-parser';
-import {Subscription} from 'rxjs';
 import {GitExecutor} from './git/git-executor';
 import {Context} from './models/context';
 import {MkdirExecutor} from './basic-commands/mkdir-executor';
@@ -20,7 +19,9 @@ import {ContextDeserializer} from './utils/context-deserializer';
 import {InitExecutor} from './basic-commands/init-executor';
 import {GitBranchUtil} from './git/utils/git-branch-util';
 import {HighlightService} from './highlight-service';
-import {GitModeUtil} from './git/utils/git-mode-util';
+import {MatDialog} from '@angular/material';
+import {ConfigDialogComponent} from './config-dialog.component';
+import {AppConfigService} from './app-config.service';
 
 @Component({
   selector: 'app-root',
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit {
     public readonly gitBranchUtil: GitBranchUtil,
     public readonly gitObjectUtil: GitObjectUtil,
     public readonly highlightService: HighlightService,
+    private readonly madDialog: MatDialog
   ) {
   }
 
@@ -74,6 +76,10 @@ export class AppComponent implements OnInit {
       this.terminal.write('Context loaded: ' + lastContextName + ' To reset to an init state, type `init`');
 
     }
+  }
+
+  openConfig() {
+    this.madDialog.open(ConfigDialogComponent);
   }
 
   getHistory(): GitCommitObject[] {
