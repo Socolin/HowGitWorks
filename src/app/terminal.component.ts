@@ -15,7 +15,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
   private terminalOutput: ElementRef;
 
   constructor(
-    private readonly terminal: Terminal,
+    public readonly terminal: Terminal,
     private readonly shellExecutor: ShellExecutor,
   ) {
   }

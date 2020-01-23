@@ -9,7 +9,7 @@ import {AppConfigService} from './app-config.service';
 export class ConfigDialogComponent implements OnInit {
 
   constructor(
-    private readonly appConfigService: AppConfigService
+    public readonly appConfigService: AppConfigService
   ) {
   }
 
