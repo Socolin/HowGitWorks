@@ -12,7 +12,7 @@ export class GitBranchCommand {
     private readonly terminal: Terminal,
     private readonly context: Context,
     private readonly fileSystemUtil: FileSystemUtil,
-    private readonly gitBranchUtil: GitBranchUtil = new GitBranchUtil(),
+    private readonly gitBranchUtil: GitBranchUtil,
   ) {
     this.argvParser = new ArgvParser([
       {name: 'verbose', short: 'v', arg: false},

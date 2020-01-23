@@ -2,5 +2,5 @@
   {{child.mode.type.toString(8)}}{{child.mode.perm.toString(8).padStart(4, '0')}} {{child.mode.type === 32 ? 'tree' : 'blob'}}
   <span class="highlight-selectable selectable"
         [class.highlighted]="highlightService.isHighlighted(child.objectHash)"
-        (click)="highlightService.highlight(child.objectHash)">{{child.objectHash}}</span> {{child.path}}
+        (click)="highlightService.highlight(child.objectHash)">{{child.objectHash | gitHash}}</span> {{child.path}}
 </div>

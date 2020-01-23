@@ -3,7 +3,7 @@
   <span class="highlight-selectable selectable"
         [class.highlighted]="highlightService.isHeadHighlighted(parentHash)"
         (click)="highlightService.highlight(parentHash)">
-    {{parentHash}}
+    {{parentHash | gitHash}}
   </span>
 </div>
 <div>
@@ -11,7 +11,7 @@
   <span class="highlight-selectable selectable"
         [class.highlighted]="highlightService.isHeadHighlighted(commit.tree)"
         (click)="highlightService.highlight(commit.tree)">
-    {{commit.tree}}
+    {{commit.tree | gitHash}}
   </span>
 </div>
 <div>

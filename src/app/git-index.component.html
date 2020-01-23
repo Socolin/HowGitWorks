@@ -5,6 +5,6 @@
     <span
       class="highlight-selectable selectable"
       (click)="highlightService.highlight(index.objectHash)"
-      [class.highlighted]="highlightService.isHighlighted(index.objectHash)">{{index.objectHash}}</span>
+      [class.highlighted]="highlightService.isHighlighted(index.objectHash)">{{index.objectHash | gitHash}}</span>
   </span>
 </div>

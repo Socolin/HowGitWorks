@@ -17,9 +17,9 @@ export class GitStatusCommand {
     private readonly context: Context,
     private readonly fileSystemUtil: FileSystemUtil,
     private readonly gitObjectUtil: GitObjectUtil,
-    private readonly gitBranchUtil: GitBranchUtil = new GitBranchUtil(),
-    private readonly gitTreeUtil: GitTreeUtil = new GitTreeUtil(gitObjectUtil),
-    private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(gitBranchUtil, gitObjectUtil, gitTreeUtil),
+    private readonly gitBranchUtil: GitBranchUtil,
+    private readonly gitTreeUtil: GitTreeUtil,
+    private readonly gitIndexUtil: GitIndexUtil,
   ) {
     this.argvParser = new ArgvParser([
       {name: 'verbose', short: 'v', arg: false},

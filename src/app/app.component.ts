@@ -38,14 +38,11 @@ import {GitModeUtil} from './git/utils/git-mode-util';
     CdExecutor,
     LsExecutor,
     CatExecutor,
-    GitObjectUtil,
     ContextSerializer,
     ContextDeserializer,
     InitExecutor,
     SaveExecutor,
     LoadExecutor,
-    GitBranchUtil,
-    GitModeUtil,
 
     HighlightService
   ]

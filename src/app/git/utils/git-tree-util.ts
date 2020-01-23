@@ -3,11 +3,13 @@ import {GitFileType, GitHash} from '../objects/types';
 import {GitTreeChild, GitTreeObject} from '../objects/git-tree-object';
 import {Repository} from '../repository';
 import {GitObjectUtil} from './git-object-util';
+import {Injectable} from '@angular/core';
 
 class IndexNode {
   [relPath: string]: IndexNode | IndexEntry;
 }
 
+@Injectable()
 export class GitTreeUtil {
   constructor(private readonly gitObjectUtil: GitObjectUtil) {
   }

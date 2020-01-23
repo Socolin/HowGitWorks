@@ -2,6 +2,7 @@ import {GitFileType, GitHash, ZeroGitHash} from '../objects/types';
 import {GitTreeChild, GitTreeObject} from '../objects/git-tree-object';
 import {Repository} from '../repository';
 import {GitTreeUtil} from './git-tree-util';
+import {Injectable} from '@angular/core';
 
 export interface TreeDiffResult {
   name: string;
@@ -18,6 +19,7 @@ export interface TreeDiffResult {
   newHash: GitHash;
 }
 
+@Injectable()
 export class GitDiffTreeUtil {
   constructor(
     private readonly gitTreeUtil: GitTreeUtil

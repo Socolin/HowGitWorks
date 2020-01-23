@@ -6,12 +6,14 @@ import {GitBranchUtil} from './git-branch-util';
 import {GitObjectUtil} from './git-object-util';
 import {GitTreeUtil} from './git-tree-util';
 import {GitTreeChild} from '../objects/git-tree-object';
+import {Injectable} from '@angular/core';
 
 interface IndexDiffResult {
   type: 'A' | 'D' | 'M';
   path: string;
 }
 
+@Injectable()
 export class GitIndexUtil {
   constructor(
     private readonly gitBranchUtil: GitBranchUtil,

@@ -14,7 +14,7 @@ export class GitAddCommand {
     private readonly context: Context,
     private readonly fileSystemUtil: FileSystemUtil,
     private readonly gitObjectUtil: GitObjectUtil,
-    private readonly gitIndexUtil: GitIndexUtil = new GitIndexUtil(),
+    private readonly gitIndexUtil: GitIndexUtil,
   ) {
     this.argvParser = new ArgvParser([
       {name: 'verbose', short: 'v', arg: false},

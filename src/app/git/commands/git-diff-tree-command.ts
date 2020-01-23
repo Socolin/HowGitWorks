@@ -3,12 +3,12 @@ import {Terminal} from '../../utils/terminal';
 import {Context} from '../../models/context';
 import {FileSystemUtil} from '../../utils/file-system-util';
 import {GitObjectUtil} from '../utils/git-object-util';
-import {GitTreeUtil} from '../utils/git-tree-util';
 import {GitDiffTreeUtil, TreeDiffResult} from '../utils/git-diff-tree-util';
 import {GitTreeObject} from '../objects/git-tree-object';
 import {GitHash} from '../objects/types';
 import {GitCommitObject} from '../objects/git-commit-object';
 import {GitModeUtil} from '../utils/git-mode-util';
+import {GitHashFormatter} from '../../utils/git-hash-formatter';
 
 export class GitDiffTreeCommand {
   private readonly argvParser: ArgvParser;
@@ -17,9 +17,10 @@ export class GitDiffTreeCommand {
     private readonly terminal: Terminal,
     private readonly context: Context,
     private readonly fileSystemUtil: FileSystemUtil,
-    private readonly gitObjectUtil: GitObjectUtil = new GitObjectUtil(),
-    private readonly gitModeUtil: GitModeUtil = new GitModeUtil(),
-    private readonly gitDiffTreeUtil: GitDiffTreeUtil = new GitDiffTreeUtil(new GitTreeUtil(gitObjectUtil)),
+    private readonly gitHashFormatter: GitHashFormatter,
+    private readonly gitObjectUtil: GitObjectUtil,
+    private readonly gitModeUtil: GitModeUtil,
+    private readonly gitDiffTreeUtil: GitDiffTreeUtil,
   ) {
     this.argvParser = new ArgvParser([
       {name: 'recursive', short: 'r', arg: false},
@@ -50,7 +51,8 @@ export class GitDiffTreeCommand {
       for (const diff of differences) {
         const mode1 = this.gitModeUtil.formatMode(diff.previousMode);
         const mode2 = this.gitModeUtil.formatMode(diff.newMode);
-        this.terminal.write(`:${mode1} ${mode2} ${diff.previousHash} ${diff.newHash} ${diff.type}\t${diff.name}`);
+        // tslint:disable-next-line:max-line-length
+        this.terminal.write(`:${mode1} ${mode2} ${this.gitHashFormatter.format(diff.previousHash)} ${this.gitHashFormatter.format(diff.newHash)} ${diff.type}\t${diff.name}`);
       }
     } else {
       this.terminal.writeError('NOT IMPLEMETED YET: Please provide 2 arguments');

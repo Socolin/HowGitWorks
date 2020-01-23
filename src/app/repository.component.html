@@ -29,7 +29,7 @@
       <span
         (click)="toggleExpandFile('.git/objects/' + objectWithHash.key);highlightService.highlight(objectWithHash.key)"
         class="highlight-selectable selectable"
-        [class.highlighted]="highlightService.isHeadHighlighted(objectWithHash.key)">{{objectWithHash.key}}</span>
+        [class.highlighted]="highlightService.isHeadHighlighted(objectWithHash.key)">{{objectWithHash.key| gitHash}}</span>
     </div>
 
     <div class="file-content" *ngIf="expandedFile['.git/objects/' + objectWithHash.key]">
@@ -67,7 +67,7 @@
       <div class="file-content" *ngIf="expandedFile['.git/refs/head/' + ref.key]">
             <span class="highlight-selectable selectable"
                   [class.highlighted]="highlightService.isHighlighted(ref.value)"
-                  (click)="highlightService.highlight(ref.value)">{{ref.value}}</span>
+                  (click)="highlightService.highlight(ref.value)">{{ref.value| gitHash}}</span>
       </div>
     </div>
   </div>
