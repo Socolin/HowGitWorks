@@ -6,9 +6,13 @@
   </div>
   <label class="input">
     <span>$</span>
-    <span contenteditable="true"
-          class="command"
-          #command
-          (keydown.enter)="execute(command.textContent); command.textContent = ''; $event.preventDefault()"></span>
+    <input
+      class="command"
+      #command
+      autocapitalize="off"
+      autocomplete="off"
+      (keydown.arrowUp)="upHistory()"
+      (keydown.arrowDown)="downHistory()"
+      (keydown.enter)="execute(command.value); command.value = ''; $event.preventDefault()"/>
   </label>
 </div>

@@ -10,9 +10,12 @@ import {Subscription} from 'rxjs';
 })
 export class TerminalComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
+  private historyLocation = 0;
 
   @ViewChild('terminalOutput', {static: true})
   private terminalOutput: ElementRef;
+  @ViewChild('command', {static: true})
+  private command: ElementRef;
 
   constructor(
     public readonly terminal: Terminal,
@@ -23,6 +26,21 @@ export class TerminalComponent implements OnInit, OnDestroy {
   execute(command: string) {
     this.terminal.write('$ ' + command);
     const result = this.shellExecutor.execute(command);
+  }
+
+  upHistory() {
+    if (this.historyLocation >= this.shellExecutor.commandHistory.length) {
+      return;
+    }
+    this.command.nativeElement.value = this.shellExecutor.commandHistory[this.historyLocation++];
+  }
+
+  downHistory() {
+    if (this.historyLocation <= 0) {
+      this.command.nativeElement.value = '';
+      return;
+    }
+    this.command.nativeElement.value = this.shellExecutor.commandHistory[--this.historyLocation];
   }
 
   ngOnInit() {
@@ -36,5 +54,4 @@ export class TerminalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

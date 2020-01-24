@@ -25,7 +25,10 @@
       grid-template-columns: 8px 1fr;
       grid-gap: 8px;
 
-      > span {
+      > input {
+        font-size: 18px;
+        font-family: "Roboto Mono", monospace;
+        border: 0;
         padding: 4px;
       }
     }

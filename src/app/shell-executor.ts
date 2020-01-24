@@ -30,7 +30,7 @@ export class ShellExecutor {
   ) {
   }
 
-  private readonly commandHistory: string[] = [];
+  public readonly commandHistory: string[] = [];
 
   public execute(command: string): number {
     try {
