@@ -44,7 +44,10 @@ export class GitIndexUtil {
     const headBranch = this.gitBranchUtil.getActiveBranch(repository);
     const headHash = headBranch ? repository.refs.heads[headBranch] : repository.HEAD;
     if (!headHash) {
-      return [];
+      return repository.index.files.map((indexEntry) => ({
+        path: indexEntry.path,
+        type: 'A'
+      }));
     }
     const commit = this.gitObjectUtil.getCommit(repository, headHash);
     const tree = this.gitObjectUtil.getTree(repository, commit.tree);
