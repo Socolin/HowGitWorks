@@ -43,6 +43,9 @@ export class GitIndexUtil {
   diffIndexWithHead(repository: Repository): IndexDiffResult[] {
     const headBranch = this.gitBranchUtil.getActiveBranch(repository);
     const headHash = headBranch ? repository.refs.heads[headBranch] : repository.HEAD;
+    if (!headHash) {
+      return [];
+    }
     const commit = this.gitObjectUtil.getCommit(repository, headHash);
     const tree = this.gitObjectUtil.getTree(repository, commit.tree);
     const children = this.gitTreeUtil.getAllChildrenRecursively(repository, tree);
