@@ -1,10 +1,36 @@
 <ng-container *ngIf="file.type === 'directory'">
-  <span>{{file.name}}/</span>
+  <div class="file">
+    <span>{{file.name}}/</span>
+    <span class="actions">
+      <button mat-icon-button [matMenuTriggerFor]="addMenu"><mat-icon>add</mat-icon></button>
+    </span>
+  </div>
+  <mat-menu #addMenu>
+    <button mat-menu-item (click)="openCreateFile()">
+      <mat-icon>insert_drive_file</mat-icon>File
+    </button>
+    <button mat-menu-item (click)="openCreateFolder()">
+      <mat-icon>create_new_folder</mat-icon>Directory
+    </button>
+  </mat-menu>
   <ng-container *ngFor="let child of file.files">
     <app-filesystem-node [file]="child"></app-filesystem-node>
   </ng-container>
 </ng-container>
 <ng-container *ngIf="file.type === 'textFile'">
-  <span (click)="displayContent = !displayContent;" class="selectable">{{file.name}}</span>
-  <div *ngIf="displayContent" class="file-content"><pre>{{file.content}}</pre></div>
+  <div class="file">
+    <span (click)="displayContent = !displayContent;" class="selectable">{{file.name}}</span>
+    <span *ngIf="displayContent" class="actions">
+      <button mat-icon-button *ngIf="!editMode" (click)="editMode = true"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button *ngIf="!editMode" (click)="deleteFile()"><mat-icon>delete</mat-icon></button>
+      <button mat-icon-button *ngIf="editMode" (click)="save()"><mat-icon>save</mat-icon></button>
+      <button mat-icon-button *ngIf="editMode" (click)="editMode = false"><mat-icon>close</mat-icon></button>
+    </span>
+  </div>
+  <div *ngIf="!editMode && displayContent" class="file-content">
+    <pre>{{file.content}}</pre>
+  </div>
+  <div *ngIf="editMode" class="file-content">
+    <textarea #editor mat-autosize [cdkAutosizeMaxRows]="5">{{file.content}}</textarea>
+  </div>
 </ng-container>

@@ -23,9 +23,22 @@ export class FileSystemUtil {
     directory.files.push(new Directory(directoryName, directory));
   }
 
+  mkDirAt(directory: Directory, path: string) {
+    const directoryName = this.getFileName(path);
+    const node = directory.files.find(x => x.name === directoryName);
+    if (node) {
+      throw new Error('Directory or file already exists: ' + path);
+    }
+    directory.files.push(new Directory(directoryName, directory));
+  }
+
   writeFile(context: Context, path: string, content: string) {
     const directory = this.getParentDirectory(context, path);
     const fileName = this.getFileName(path);
+    this.writeFileAt(directory, fileName, content);
+  }
+
+  writeFileAt(directory: Directory, fileName: string, content: string): void {
     const node = directory.files.find(x => x.name === fileName);
     if (node) {
       if (node instanceof TextFile) {
@@ -34,7 +47,7 @@ export class FileSystemUtil {
         throw new Error('Cannot write file at this location. This path is a ' + node.type);
       }
     } else {
-      directory.files.push(new TextFile(fileName, content));
+      directory.files.push(new TextFile(fileName, content, directory));
     }
   }
 
@@ -125,6 +138,20 @@ export class FileSystemUtil {
       if (file instanceof Directory) {
         this.iterateAllChild(file, path + '/' + file.name, action);
       }
+    }
+  }
+
+  updateFileContent(file: File, value: string): void {
+    if (!(file instanceof TextFile)) {
+      throw new Error('Expect the file to be a TextFile');
+    }
+    file.content = value;
+  }
+
+  deleteFile(file: File): void {
+    const index = file.parent.files.indexOf(file);
+    if (index !== -1) {
+      file.parent.files.splice(index, 1);
     }
   }
 }

@@ -5,6 +5,15 @@
     margin-left: 16px;
   }
 
+  .file {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    .actions {
+      margin-left: auto;
+    }
+  }
+
   .selectable {
     text-decoration: underline;
     cursor: pointer;

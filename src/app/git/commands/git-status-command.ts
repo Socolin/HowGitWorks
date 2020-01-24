@@ -107,10 +107,10 @@ export class GitStatusCommand {
       for (const path of Object.keys(changes)) {
         switch (changes[path]) {
           case 'm':
-            this.terminal.write('modified:   ' + path);
+            this.terminal.write('\tmodified:   ' + path);
             break;
           case 'd':
-            this.terminal.write('deleted:    ' + path);
+            this.terminal.write('\tdeleted:    ' + path);
             break;
         }
       }

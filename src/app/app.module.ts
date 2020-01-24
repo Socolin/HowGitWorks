@@ -13,7 +13,7 @@ import {
   MatButtonModule,
   MatCheckboxModule,
   MatDialogModule,
-  MatIconModule,
+  MatIconModule, MatInputModule, MatMenuModule,
   MatSlideToggleModule,
   MatTooltipModule
 } from '@angular/material';
@@ -59,7 +59,9 @@ import {FormsModule} from '@angular/forms';
     MatTooltipModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatInputModule,
+    MatMenuModule
   ],
   providers: [
     AppConfigService,
