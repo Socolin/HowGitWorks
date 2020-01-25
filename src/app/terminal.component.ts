@@ -26,24 +26,26 @@ export class TerminalComponent implements OnInit, OnDestroy {
   execute(command: string) {
     this.terminal.write('$ ' + command);
     const result = this.shellExecutor.execute(command);
-    this.historyLocation = 0;
+    this.historyLocation = -1;
   }
 
   upHistory() {
-    if (this.historyLocation >= this.shellExecutor.commandHistory.length) {
+    if (++this.historyLocation >= this.shellExecutor.commandHistory.length) {
+      this.historyLocation = this.shellExecutor.commandHistory.length - 1;
       this.setCaretToEnd();
       return;
     }
-    this.command.nativeElement.value = this.shellExecutor.commandHistory[this.historyLocation++];
+    this.command.nativeElement.value = this.shellExecutor.commandHistory[this.historyLocation];
     this.setCaretToEnd();
   }
 
   downHistory() {
-    if (this.historyLocation <= 0) {
+    if (--this.historyLocation < 0) {
+      this.historyLocation = -1;
       this.command.nativeElement.value = '';
       return;
     }
-    this.command.nativeElement.value = this.shellExecutor.commandHistory[--this.historyLocation];
+    this.command.nativeElement.value = this.shellExecutor.commandHistory[this.historyLocation];
     this.setCaretToEnd();
   }
 
