@@ -21,7 +21,6 @@ import {GitBranchUtil} from './git/utils/git-branch-util';
 import {HighlightService} from './highlight-service';
 import {MatDialog} from '@angular/material';
 import {ConfigDialogComponent} from './config-dialog.component';
-import {AppConfigService} from './app-config.service';
 
 @Component({
   selector: 'app-root',
