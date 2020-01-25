@@ -38,7 +38,7 @@ export class ShellExecutor {
       if (argv.length === 0) {
         return;
       }
-      this.commandHistory.push(command);
+      this.commandHistory.unshift(command);
       switch (argv[0]) {
         case 'git':
           return this.gitExecutor.execute(this.context, argv.slice(1));

@@ -15,7 +15,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
   @ViewChild('terminalOutput', {static: true})
   private terminalOutput: ElementRef;
   @ViewChild('command', {static: true})
-  private command: ElementRef;
+  private command: ElementRef<HTMLInputElement>;
 
   constructor(
     public readonly terminal: Terminal,
@@ -26,13 +26,16 @@ export class TerminalComponent implements OnInit, OnDestroy {
   execute(command: string) {
     this.terminal.write('$ ' + command);
     const result = this.shellExecutor.execute(command);
+    this.historyLocation = 0;
   }
 
   upHistory() {
     if (this.historyLocation >= this.shellExecutor.commandHistory.length) {
+      this.setCaretToEnd();
       return;
     }
     this.command.nativeElement.value = this.shellExecutor.commandHistory[this.historyLocation++];
+    this.setCaretToEnd();
   }
 
   downHistory() {
@@ -41,6 +44,14 @@ export class TerminalComponent implements OnInit, OnDestroy {
       return;
     }
     this.command.nativeElement.value = this.shellExecutor.commandHistory[--this.historyLocation];
+    this.setCaretToEnd();
+  }
+
+  private setCaretToEnd() {
+    setTimeout(() => {
+      this.command.nativeElement.focus();
+      this.command.nativeElement.setSelectionRange(this.command.nativeElement.value.length, this.command.nativeElement.value.length);
+    }, 0);
   }
 
   ngOnInit() {
