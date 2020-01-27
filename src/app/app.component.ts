@@ -34,7 +34,6 @@ import {ConfigDialogComponent} from './config-dialog.component';
     MkdirExecutor,
     EchoExecutor,
     Context,
-    FileSystemUtil,
     CdExecutor,
     LsExecutor,
     CatExecutor,

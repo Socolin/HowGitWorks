@@ -51,6 +51,14 @@ export class FileSystemUtil {
     }
   }
 
+  getTextFile(context: Context, path: string): TextFile {
+    const node = this.getNode(context, path);
+    if (!(node instanceof TextFile)) {
+      throw new Error(`Expect file ${path} to be a text file`);
+    }
+    return node;
+  }
+
   getNode(context: Context, path: string): File {
     if (!path) {
       return context.workingDirectory;

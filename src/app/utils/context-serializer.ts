@@ -38,7 +38,8 @@ export class ContextSerializer {
         return this.serializeDirectory(f);
       } else {
         return {
-          ...f
+          ...f,
+          parent: undefined
         };
       }
     });

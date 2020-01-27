@@ -30,6 +30,7 @@ import {GitIndexUtil} from './git/utils/git-index-util';
 import {GitDiffTreeUtil} from './git/utils/git-diff-tree-util';
 import {ConfigDialogComponent} from './config-dialog.component';
 import {FormsModule} from '@angular/forms';
+import {FileSystemUtil} from './utils/file-system-util';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,8 @@ import {FormsModule} from '@angular/forms';
   providers: [
     AppConfigService,
     GitHashFormatter,
+
+    FileSystemUtil,
 
     GitModeUtil,
     GitObjectUtil,

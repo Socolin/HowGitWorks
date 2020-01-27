@@ -18,3 +18,8 @@ export enum GitFileType {
    * Socket = 0o14,
    */
 }
+
+export interface GitFileMode {
+  readonly type: GitFileType;
+  readonly perm: 0o0644 | 0o0755 | 0o0000;
+}

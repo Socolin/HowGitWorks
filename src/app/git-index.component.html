@@ -1,6 +1,6 @@
 <div *ngFor="let index of index.files">
   <span>
-    {{index.type.toString(8)}}{{index.mode.toString(8).padStart(4, '0')}}
+    {{index.mode.type.toString(8)}}{{index.mode.perm.toString(8).padStart(4, '0')}}
     {{index.path}}
     <span
       class="highlight-selectable selectable"

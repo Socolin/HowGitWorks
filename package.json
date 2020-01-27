@@ -21,6 +21,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@types/diff": "^4.0.2",
+    "diff": "^4.0.2",
     "hammerjs": "^2.0.8",
     "js-sha1": "^0.6.0",
     "rxjs": "~6.4.0",

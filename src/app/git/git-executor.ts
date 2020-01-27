@@ -16,6 +16,7 @@ import {GitBranchUtil} from './utils/git-branch-util';
 import {GitTreeUtil} from './utils/git-tree-util';
 import {GitIndexUtil} from './utils/git-index-util';
 import {GitHashObjectCommand} from './commands/git-hash-object-command';
+import {GitDiffCommand} from './commands/git-diff-command';
 
 @Injectable()
 export class GitExecutor {
@@ -59,6 +60,16 @@ export class GitExecutor {
           context,
           this.fileSystemUtil,
           this.gitObjectUtil
+        ).execute(argv.slice(1));
+        break;
+      case 'diff':
+        new GitDiffCommand(
+          this.terminal,
+          context,
+          this.fileSystemUtil,
+          this.gitObjectUtil,
+          this.gitIndexUtil,
+          this.gitModeUtil
         ).execute(argv.slice(1));
         break;
       case 'status':

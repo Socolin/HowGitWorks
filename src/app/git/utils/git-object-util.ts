@@ -15,6 +15,14 @@ export class GitObjectUtil {
   ) {
   }
 
+  public getBlob(repository: Repository, hash: GitHash): GitBlobObject {
+    const blob = this.getObject(repository, hash);
+    if (!(blob instanceof GitBlobObject)) {
+      throw new Error(`Invalid object: ${hash} expected to be a blob but was ${blob.type}`);
+    }
+    return blob;
+  }
+
   public getTree(repository: Repository, hash: GitHash): GitTreeObject {
     const tree = this.getObject(repository, hash);
     if (!(tree instanceof GitTreeObject)) {

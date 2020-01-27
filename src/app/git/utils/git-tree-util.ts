@@ -55,10 +55,7 @@ export class GitTreeUtil {
         });
       } else {
         children.push({
-          mode: {
-            type: node.type,
-            perm: node.mode,
-          },
+          mode: node.mode,
           objectHash: node.objectHash,
           path: relativePath
         });
