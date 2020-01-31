@@ -21,6 +21,7 @@ import {GitBranchUtil} from './git/utils/git-branch-util';
 import {HighlightService} from './highlight-service';
 import {MatDialog} from '@angular/material';
 import {ConfigDialogComponent} from './config-dialog.component';
+import {RmExecutor} from './basic-commands/rm-executor';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +38,7 @@ import {ConfigDialogComponent} from './config-dialog.component';
     CdExecutor,
     LsExecutor,
     CatExecutor,
+    RmExecutor,
     ContextSerializer,
     ContextDeserializer,
     InitExecutor,

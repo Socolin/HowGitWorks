@@ -1,9 +1,9 @@
 export class ArgvParser {
-  constructor(private readonly optionsDef: { name: string, short: string, arg: boolean }[]) {
+  constructor(private readonly optionsDef: { name: string, short?: string, arg: boolean }[]) {
   }
 
   parse(argv: string[]): { options: { [name: string]: string | boolean }, values: string[] } {
-    let optionDef: { name: string; short: string; arg: boolean };
+    let optionDef: { name: string; short?: string; arg: boolean };
     const result = {
       options: {},
       values: []

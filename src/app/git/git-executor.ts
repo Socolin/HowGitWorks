@@ -17,6 +17,7 @@ import {GitTreeUtil} from './utils/git-tree-util';
 import {GitIndexUtil} from './utils/git-index-util';
 import {GitHashObjectCommand} from './commands/git-hash-object-command';
 import {GitDiffCommand} from './commands/git-diff-command';
+import {GitRmCommand} from './commands/git-rm-command';
 
 @Injectable()
 export class GitExecutor {
@@ -47,6 +48,15 @@ export class GitExecutor {
         break;
       case 'add':
         new GitAddCommand(
+          this.terminal,
+          context,
+          this.fileSystemUtil,
+          this.gitObjectUtil,
+          this.gitIndexUtil
+        ).execute(argv.slice(1));
+        break;
+      case 'rm':
+        new GitRmCommand(
           this.terminal,
           context,
           this.fileSystemUtil,

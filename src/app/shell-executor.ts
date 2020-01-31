@@ -11,6 +11,7 @@ import {LsExecutor} from './basic-commands/ls-executor';
 import {LoadExecutor} from './basic-commands/load-executor';
 import {SaveExecutor} from './basic-commands/save-executor';
 import {InitExecutor} from './basic-commands/init-executor';
+import {RmExecutor} from './basic-commands/rm-executor';
 
 @Injectable()
 export class ShellExecutor {
@@ -20,6 +21,7 @@ export class ShellExecutor {
     private readonly terminal: Terminal,
     private readonly gitExecutor: GitExecutor,
     private readonly mkdirExecutor: MkdirExecutor,
+    private readonly rmExecutor: RmExecutor,
     private readonly echoExecutor: EchoExecutor,
     private readonly cdExecutor: CdExecutor,
     private readonly lsExecutor: LsExecutor,
@@ -58,6 +60,8 @@ export class ShellExecutor {
           return this.saveExecutor.execute(this.context, argv.slice(1));
         case 'load':
           return this.loadExecutor.execute(this.context, argv.slice(1));
+        case 'rm':
+          return this.rmExecutor.execute(this.context, argv.slice(1));
         default:
           this.terminal.writeError(`Unknown command \`${argv[0]}'`);
           return 1;

@@ -129,7 +129,7 @@ export class GitIndexUtil {
 
     for (const file of context.repository.index.files) {
       if (!(file.path in allFilesPathAsDict)) {
-        removedFiles.push({path: file.path, c: 'd'});
+        removedFiles.push({path: file.path, c: 'd', indexEntry: file});
       }
     }
 
