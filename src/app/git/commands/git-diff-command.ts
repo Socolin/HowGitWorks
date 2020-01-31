@@ -100,16 +100,6 @@ export class GitDiffCommand {
     newFile: { objectHash: GitHash, mode: GitFileMode }
   ) {
     this.terminal.write(`diff --git a/${path} b/${path}`);
-    if (oldStr) {
-      this.terminal.write(`--- a/${path}`);
-    } else {
-      this.terminal.write(`--- /dev/null`);
-    }
-    if (oldStr) {
-      this.terminal.write(`+++ /dev/null`);
-    } else {
-      this.terminal.write(`+++ b/${path}`);
-    }
 
     const newMode = this.gitModeUtil.formatMode(newFile.mode);
     const previousMode = this.gitModeUtil.formatMode(previousFile.mode);
@@ -124,6 +114,18 @@ export class GitDiffCommand {
     } else {
       this.terminal.write(`index ${previousFile.objectHash.substr(0, 7)}..${newFile.objectHash.substr(0, 7)} ${newMode}`);
     }
+
+    if (oldStr) {
+      this.terminal.write(`--- a/${path}`);
+    } else {
+      this.terminal.write(`--- /dev/null`);
+    }
+    if (oldStr) {
+      this.terminal.write(`+++ /dev/null`);
+    } else {
+      this.terminal.write(`+++ b/${path}`);
+    }
+
     const fileDiff = JsDiff.diffLines(oldStr, newStr);
     for (const change of fileDiff) {
       let prefix = ' ';
