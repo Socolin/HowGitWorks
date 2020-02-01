@@ -44,7 +44,6 @@ export class GitRestoreCommand {
     const restoreIndex = args.options.staged;
     const source = args.options.source || (restoreIndex ? 'HEAD' : undefined);
     const sourceHash = this.gitRefUtil.resolveRef(this.context.repository, source as string);
-    console.log(sourceHash);
     for (const path of files) {
       const fileObjectHash = this.getFileContentObject(this.context.repository, path, sourceHash);
       if (!fileObjectHash) {

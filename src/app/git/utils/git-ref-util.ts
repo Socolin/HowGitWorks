@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Repository} from '../repository';
 import {GitHash} from '../objects/types';
 import {GitBranchUtil} from './git-branch-util';
+import {GitCommitObject} from '../objects/git-commit-object';
 
 @Injectable()
 export class GitRefUtil {
@@ -13,6 +14,15 @@ export class GitRefUtil {
   public resolveRef(repository: Repository, refName: string): GitHash {
     if (!refName) {
       return undefined;
+    }
+    if (refName.indexOf('~') !== -1) {
+      const splitRef = refName.split('~', 2);
+      const offset = parseInt(splitRef[1], 10);
+      let hash = this.resolveRef(repository, splitRef[0]);
+      for (let i = 0; i < offset; i++) {
+        hash = (repository.objects[hash] as GitCommitObject).parents[0];
+      }
+      return hash;
     }
     if (refName === 'HEAD') {
       const currentBranch = this.gitBranchUtil.getActiveBranch(repository);
