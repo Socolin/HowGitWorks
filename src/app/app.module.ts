@@ -31,6 +31,7 @@ import {GitDiffTreeUtil} from './git/utils/git-diff-tree-util';
 import {ConfigDialogComponent} from './config-dialog.component';
 import {FormsModule} from '@angular/forms';
 import {FileSystemUtil} from './utils/file-system-util';
+import {GitRefUtil} from './git/utils/git-ref-util';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import {FileSystemUtil} from './utils/file-system-util';
     GitTreeUtil,
     GitIndexUtil,
     GitDiffTreeUtil,
+    GitRefUtil,
   ],
   bootstrap: [AppComponent]
 })

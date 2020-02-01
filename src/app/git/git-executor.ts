@@ -18,6 +18,8 @@ import {GitIndexUtil} from './utils/git-index-util';
 import {GitHashObjectCommand} from './commands/git-hash-object-command';
 import {GitDiffCommand} from './commands/git-diff-command';
 import {GitRmCommand} from './commands/git-rm-command';
+import {GitRestoreCommand} from './commands/git-restore-command';
+import {GitRefUtil} from './utils/git-ref-util';
 
 @Injectable()
 export class GitExecutor {
@@ -31,6 +33,7 @@ export class GitExecutor {
     private readonly gitBranchUtil: GitBranchUtil,
     private readonly gitIndexUtil: GitIndexUtil,
     private readonly gitDiffTreeUtil: GitDiffTreeUtil,
+    private readonly gitRefUtil: GitRefUtil,
   ) {
   }
 
@@ -62,6 +65,16 @@ export class GitExecutor {
           this.fileSystemUtil,
           this.gitObjectUtil,
           this.gitIndexUtil
+        ).execute(argv.slice(1));
+        break;
+      case 'restore':
+        new GitRestoreCommand(
+          this.terminal,
+          context,
+          this.fileSystemUtil,
+          this.gitObjectUtil,
+          this.gitIndexUtil,
+          this.gitRefUtil
         ).execute(argv.slice(1));
         break;
       case 'hash-object':

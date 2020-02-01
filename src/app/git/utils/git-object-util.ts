@@ -7,11 +7,13 @@ import {GitCommitObject} from '../objects/git-commit-object';
 import {Repository} from '../repository';
 import {IGitObject} from '../objects/git-object';
 import {GitModeUtil} from './git-mode-util';
+import {GitRefUtil} from './git-ref-util';
 
 @Injectable()
 export class GitObjectUtil {
   constructor(
-    private readonly gitModeUtil: GitModeUtil = new GitModeUtil()
+    private readonly gitModeUtil: GitModeUtil,
+    private readonly gitRefUtil: GitRefUtil
   ) {
   }
 
@@ -40,21 +42,16 @@ export class GitObjectUtil {
   }
 
   public getObject(repository: Repository, hash: GitHash): IGitObject {
-    const object = repository.objects[hash];
+    const resolvedHash = this.gitRefUtil.resolveHash(repository, hash);
+    if (!resolvedHash) {
+      throw new Error(`Object not found: ${resolvedHash}`);
+    }
+    const object = repository.objects[resolvedHash];
     if (!object) {
-      const matchingHashes = Object.keys(repository.objects).filter(h => h.startsWith(hash));
-      if (matchingHashes) {
-        if (matchingHashes.length > 1) {
-          console.log(matchingHashes);
-          throw new Error(`Ambiguous hash: ${hash}`);
-        }
-        return repository.objects[matchingHashes[0]];
-      }
-      throw new Error(`Object not found: ${hash}`);
+      throw new Error(`Object not found: ${resolvedHash}`);
     }
     return object;
   }
-
 
   public hashBlob(content: string): GitBlobObject {
     const fileContent = new TextEncoder().encode(content);
