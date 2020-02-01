@@ -131,7 +131,8 @@ export class GitExecutor {
           this.gitHashFormatter,
           this.gitObjectUtil,
           this.gitModeUtil,
-          this.gitDiffTreeUtil
+          this.gitDiffTreeUtil,
+          this.gitRefUtil
         ).execute(argv.slice(1));
         break;
       default:

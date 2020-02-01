@@ -5,10 +5,10 @@ import {FileSystemUtil} from '../../utils/file-system-util';
 import {GitObjectUtil} from '../utils/git-object-util';
 import {GitDiffTreeUtil, TreeDiffResult} from '../utils/git-diff-tree-util';
 import {GitTreeObject} from '../objects/git-tree-object';
-import {GitHash} from '../objects/types';
 import {GitCommitObject} from '../objects/git-commit-object';
 import {GitModeUtil} from '../utils/git-mode-util';
 import {GitHashFormatter} from '../../utils/git-hash-formatter';
+import {GitRefUtil} from '../utils/git-ref-util';
 
 export class GitDiffTreeCommand {
   private readonly argvParser: ArgvParser;
@@ -21,6 +21,7 @@ export class GitDiffTreeCommand {
     private readonly gitObjectUtil: GitObjectUtil,
     private readonly gitModeUtil: GitModeUtil,
     private readonly gitDiffTreeUtil: GitDiffTreeUtil,
+    private readonly gitRefUtil: GitRefUtil,
   ) {
     this.argvParser = new ArgvParser([
       {name: 'recursive', short: 'r', arg: false},
@@ -35,11 +36,8 @@ export class GitDiffTreeCommand {
 
     const args = this.argvParser.parse(argv);
     if (args.values.length === 2) {
-      const hash1 = args.values[0];
-      const hash2 = args.values[1];
-
-      const tree1 = this.getTree(hash1);
-      const tree2 = this.getTree(hash2);
+      const tree1 = this.getTree(args.values[0]);
+      const tree2 = this.getTree(args.values[1]);
 
       let differences: TreeDiffResult[];
       if (args.options.recursive) {
@@ -59,7 +57,8 @@ export class GitDiffTreeCommand {
     }
   }
 
-  private getTree(hash: GitHash): GitTreeObject {
+  private getTree(ref: string): GitTreeObject {
+    const hash = this.gitRefUtil.resolveRef(this.context.repository, ref);
     const object = this.gitObjectUtil.getObject(this.context.repository, hash);
     if (object instanceof GitTreeObject) {
       return object;
