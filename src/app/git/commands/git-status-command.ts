@@ -67,7 +67,7 @@ export class GitStatusCommand {
         this.terminal.write('Changes not staged for commit:');
         this.terminal.write('');
         this.terminal.write('  (use "git add/rm <file>..." to update what will be committed)');
-        this.terminal.write('  (use "git checkout -- <file>..." to discard changes in working directory)');
+        this.terminal.write('  (use "git restore -- <file>..." to discard changes in working directory)');
         this.terminal.write('');
         for (const diff of localDifferences) {
           switch (diff.type) {
